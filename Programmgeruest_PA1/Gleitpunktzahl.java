@@ -402,47 +402,59 @@ public class Gleitpunktzahl {
     // Inf+0 = Inf
     // Inf-0 = Inf
     // 0-Inf = -Inf
-    // 0+Inf = -Inf
+    // 0+Inf = +Inf
 	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r, boolean isSubstraction) {
+        // code could have been shortened, leaving it like this for readability
 		if (r.isInfinite()) {
             // r is infinity
             if (this.isInfinite()) {
                 if (this.vorzeichen != r.vorzeichen) {
                     if (isSubstraction) {
-                        if (this.vorzeichen) {
-                            // -Inf-(+Inf)
-                            return this;
-                        } else {
-                            // +Inf-(-Inf)
-                        }
+                        // -Inf-(+Inf) = -Inf
+                        // +Inf-(-Inf) = Inf
+                    } else {
+                        // underschiedliche Vorzeichen, addition, both infinity
+                        // special case -> NaN
+                        // +Inf+(-Inf) = NaN
+                        // -Inf+(+Inf) = NaN
+                        this.setNaN();
                     }
-                    // special case -> NaN
-                    this.setNaN();
                     return this;
                 } else {
                     // same sign -> either + or -, but check 
+                    if (this.vorzeichen) {
+                        // this and r are both negative, if substraction -> NaN
+                        if (isSubstraction) {
+                            // -Inf-(-Inf) = NaN
+                            this.setNaN();
+                        } else {
+                            // -Inf+(-Inf) = -Inf
+                        }
+                        return this;
+                    } else {
+                        // this and r are both positive, if substraction -> NaN
+                        if (isSubstraction) {
+                            // +Inf-(+Inf) = NaN
+                            this.setNaN();
+                        } else {
+                            // +Inf+(+Inf) = Inf
+                        }
+                    }
+                }
+            } else if (this.isNull()) {
+                if (isSubstraction) {
+                    r.vorzeichen = !r.vorzeichen;
                 }
             }
             return r;
-		}
+		} else if (r.isNull()) {
+            return this;
+        } else if (r.isNaN()) {
+            return r;
+        } else if (this.isNaN()) {
+            return this;
+        }
 
-		if (this.isInfinite()) {
-			return this;
-		}
-
-		if (r.isNull()) {
-			return this;
-		}
-
-		if (this.isNull()) {
-			return r;
-		}
-
-		if (r.isNaN() || this.isNaN()) {
-			Gleitpunktzahl nan = new Gleitpunktzahl();
-			nan.setNaN();
-			return nan;
-		}
 		return null;
 	}
 
