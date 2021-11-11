@@ -17,6 +17,7 @@ public class Test_Gleitpunktzahl {
 		Gleitpunktzahl gleiterg;
 
 		// Test: 1.5 + 2.25 = 3.75
+        System.out.println("Test 1.5 + 2.25");
 		x = new Gleitpunktzahl(1.5);
 		y = new Gleitpunktzahl(2.25);
 
@@ -29,7 +30,8 @@ public class Test_Gleitpunktzahl {
 		} else {
 			System.out.println("    Richtiges Ergebnis\n");
 		}
-		// Test: num - 0 = num
+		// Test: 1 - 0 = 1
+        System.out.println("Test 1 - 0 = 1");
 		x = new Gleitpunktzahl(1);
 		y = new Gleitpunktzahl(0);
 
@@ -61,8 +63,9 @@ public class Test_Gleitpunktzahl {
 		}
 
 		// Test: 0 - num = -num
-		y = new Gleitpunktzahl(1);
+        System.out.println("Test: 0 - 1 = -1");
 		x = new Gleitpunktzahl(0);
+		y = new Gleitpunktzahl(1);
 
 		gleitref = new Gleitpunktzahl((0 - 1));
 		gleiterg = x.sub(y);
@@ -75,6 +78,7 @@ public class Test_Gleitpunktzahl {
 		}
 
 		// Test: num + NaN = NaN
+        System.out.println("Test: 1 + NaN = NaN");
 		x = new Gleitpunktzahl(1);
 		y = new Gleitpunktzahl(0);
 		y.setNaN();
@@ -92,6 +96,7 @@ public class Test_Gleitpunktzahl {
 		}
 
 		// Test: num - NaN = NaN
+        System.out.println("Test: 1 - NaN = NaN");
 		x = new Gleitpunktzahl(1);
 		y = new Gleitpunktzahl(0);
 		y.setNaN();

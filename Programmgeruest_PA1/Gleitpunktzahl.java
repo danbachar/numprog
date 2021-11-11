@@ -385,8 +385,8 @@ public class Gleitpunktzahl {
 
 		result.mantisse = this.mantisse + r.mantisse;
 
-		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
 		result.vorzeichen = this.vorzeichen;
+        result.exponent = this.exponent; // TODO: check this
 		result.normalisiere();
 		return result;
 	}
@@ -443,6 +443,11 @@ public class Gleitpunktzahl {
                 }
             } else if (this.isNull()) {
                 if (isSubstraction) {
+                    r.vorzeichen = !r.vorzeichen;
+                }
+            } else {
+                if (isSubstraction) {
+                    // num - (+inf) = -inf
                     r.vorzeichen = !r.vorzeichen;
                 }
             }
