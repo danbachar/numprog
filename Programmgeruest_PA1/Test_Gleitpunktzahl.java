@@ -184,6 +184,23 @@ public class Test_Gleitpunktzahl {
 			System.out.println("    Richtiges Ergebnis\n");
 		}
 
+        // Test: tooHighNumber + 0 = Infinity
+        System.out.println("Test: really big number + 0 = Infinity");
+		x = new Gleitpunktzahl(Math.pow(2, 200));
+		y = new Gleitpunktzahl(0);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(false);
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+            System.out.println("Max exponent: " + x.getSizeExponent());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
 		
 		/*
 		Test, Fall: ABRUNDEN und SETZEN der Groesse der Mantisse

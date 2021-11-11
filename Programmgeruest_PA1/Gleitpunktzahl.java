@@ -356,6 +356,9 @@ public class Gleitpunktzahl {
 		// aus
 		Gleitpunktzahl result = detectExceptionalSt(r, false);
 		if (result != null) {
+            if (result.exponent > Gleitpunktzahl.maxExponent) {
+                result.setInfinite(result.vorzeichen);
+            }
 			return result;
 		}
 		if (this.vorzeichen != r.vorzeichen) {
@@ -388,6 +391,10 @@ public class Gleitpunktzahl {
 		result.vorzeichen = this.vorzeichen;
         result.exponent = this.exponent; // TODO: check this
 		result.normalisiere();
+
+        if (result.exponent > Gleitpunktzahl.maxExponent) {
+            result.setInfinite(result.vorzeichen);
+        }
 		return result;
 	}
 
