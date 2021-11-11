@@ -185,7 +185,7 @@ public class Test_Gleitpunktzahl {
 		try {
 			System.out.println("Test der Subtraktion mit Gleitpunktzahl");
 
-			// Test: Addition
+			// Test: Subtraktion
 			System.out.println("Test: Subtraktion  x - y");
 			x = new Gleitpunktzahl(3.25);
 			y = new Gleitpunktzahl(2.75);

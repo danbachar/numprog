@@ -354,7 +354,7 @@ public class Gleitpunktzahl {
 
 		// Wenn Vorzeichen nicht gleich führe substraktion mit entsprechenden Vorzeichen
 		// aus
-		Gleitpunktzahl result = detectExceptionalSt(r);
+		Gleitpunktzahl result = detectExceptionalSt(r, false);
 		if (result != null) {
 			return result;
 		}
@@ -391,9 +391,39 @@ public class Gleitpunktzahl {
 		return result;
 	}
 
-	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r) {
+    // +Inf+(+Inf) = Inf
+    // +Inf+(-Inf) = NaN
+    // +Inf-(+Inf) = NaN
+    // +Inf-(-Inf) = Inf
+    // -Inf+(+Inf) = NaN
+    // -Inf+(-Inf) = -Inf
+    // -Inf-(+Inf) = -Inf
+    // -Inf-(-Inf) = NaN
+    // Inf+0 = Inf
+    // Inf-0 = Inf
+    // 0-Inf = -Inf
+    // 0+Inf = -Inf
+	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r, boolean isSubstraction) {
 		if (r.isInfinite()) {
-			return r;
+            // r is infinity
+            if (this.isInfinite()) {
+                if (this.vorzeichen != r.vorzeichen) {
+                    if (isSubstraction) {
+                        if (this.vorzeichen) {
+                            // -Inf-(+Inf)
+                            return this;
+                        } else {
+                            // +Inf-(-Inf)
+                        }
+                    }
+                    // special case -> NaN
+                    this.setNaN();
+                    return this;
+                } else {
+                    // same sign -> either + or -, but check 
+                }
+            }
+            return r;
 		}
 
 		if (this.isInfinite()) {
@@ -428,7 +458,7 @@ public class Gleitpunktzahl {
 		 * Funktionen normalisiere und denormalisiere. Achten Sie auf Sonderfaelle!
 		 */
 
-		Gleitpunktzahl result = detectExceptionalSt(r);
+		Gleitpunktzahl result = detectExceptionalSt(r, true);
 		if (result != null) {
 			return result;
 		}
@@ -461,7 +491,7 @@ public class Gleitpunktzahl {
 			result.mantisse = r.mantisse - this.mantisse;
 			result.vorzeichen = !r.vorzeichen;
 		}
-
+        result.exponent = this.exponent;
 		result.normalisiere();
 		return result;
 	}
