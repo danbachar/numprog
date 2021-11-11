@@ -16,6 +16,21 @@ public class Test_Gleitpunktzahl {
 		Gleitpunktzahl gleitref = new Gleitpunktzahl();
 		Gleitpunktzahl gleiterg;
 
+        // Test: 1.9999999 + 2.9999999 = 
+        System.out.println("Test 1.9999999 + 2.9999999");
+		x = new Gleitpunktzahl(1.9999999);
+		y = new Gleitpunktzahl(2.9999999);
+
+		gleitref = new Gleitpunktzahl((1.9999999 + 2.9999999));
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printAdd(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
 		// Test: 1.5 + 2.25 = 3.75
         System.out.println("Test 1.5 + 2.25");
 		x = new Gleitpunktzahl(1.5);
@@ -46,12 +61,68 @@ public class Test_Gleitpunktzahl {
 		}
 
 		// Test: num + Infinity = Infinity
+        System.out.println("Test 1 + Infinity = Infinity");
 		x = new Gleitpunktzahl(1);
 		y = new Gleitpunktzahl(0);
 		y.setInfinite(false);
 
 		gleitref = new Gleitpunktzahl(0);
 		gleitref.setInfinite(false);
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printAdd(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        // Test: num - (+Infinity) = -Infinity
+        System.out.println("Test 1 - (+Infinity) = -Infinity");
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setInfinite(false);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(true);
+
+		gleiterg = x.sub(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printAdd(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        // Test: num + (+Infinity) = Infinity
+        System.out.println("Test 1 + (+Infinity) = Infinity");
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setInfinite(false);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(false);
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printAdd(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        // Test: num + (-Infinity) = -Infinity
+        System.out.println("Test 1 + (-Infinity) = -Infinity");
+
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setInfinite(true);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(true);
 
 		gleiterg = x.add(y);
 		// Test, ob Ergebnis korrekt
