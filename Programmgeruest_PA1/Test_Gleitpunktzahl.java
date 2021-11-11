@@ -183,6 +183,65 @@ public class Test_Gleitpunktzahl {
 		} else {
 			System.out.println("    Richtiges Ergebnis\n");
 		}
+
+		
+		/*
+		Test, Fall: ABRUNDEN und SETZEN der Groesse der Mantisse
+		Groesse der Mantisse: 2
+
+		testet das Resultat von 12 + 0.5:
+		1.1*2^3 + 1.0*2^-1 =
+		(1.1*2^4 + 1.0)*2^-1 =
+		(11000 + 1.0)*2^-1 =
+		(11001)*2^-1 =
+		1,1*2^3
+		 */
+		x = new Gleitpunktzahl(12);
+		y = new Gleitpunktzahl(0.5);
+
+		x.setSizeMantisse(2);
+		y.setSizeMantisse(2);
+
+		gleiterg.setDouble(12);
+
+		if(x.add(y).compareAbsTo(gleiterg)==0){
+			System.out.println("    Richtiges Ergebnis\n");
+		}else{
+			System.out.println("    Fehler!\n      Es wurde gerechnet:            " + x + " + " + y);
+			System.out.println("      Die Mantisse im Test ist auf Groesse 2 gesetzt.");
+			System.out.println("      Das korrekte Ergebniss lautet: " + gleiterg + "\n");
+		}
+
+		/*
+		Test, Fall: AUFRUNDEN und SETZEN der Groesse der Mantisse
+		Groesse der Mantisse: 2
+		testet das Resultat von 12 + 2:
+		1.1*2^3 + 1.0*2^1 =
+		(110 + 1)*2^1 =
+		(111)*2^1 =
+		(1.11)*2^3 =
+		(1.11 + 0.1)*2^3 =    //+0.1 wegen der Rundung
+		(1,0)*2^4
+		 */
+		x = new Gleitpunktzahl(12);
+		y = new Gleitpunktzahl(2);
+
+		x.setSizeMantisse(2);
+		y.setSizeMantisse(2);
+
+		gleiterg.setDouble(16);
+
+		if(x.add(y).compareAbsTo(gleiterg)==0){
+			System.out.println("    Richtiges Ergebnis\n");
+		}else{
+			System.out.println("    Fehler!\n      Es wurde gerechnet:            " + x + " + " + y);
+			System.out.println("      Die Mantisse im Test ist auf Groesse 2 gesetzt.");
+			System.out.println("      Das korrekte Ergebniss lautet: " + gleiterg + "\n");
+		}
+
+
+		//todo: weitere Tests mit Setzen der Groesse der Mantisse auf andere Zahlen
+		//todo: Testfall wenn der Exponent zu klein ist
 	}
 
 	public static void test_Gleitpunktzahl() {
