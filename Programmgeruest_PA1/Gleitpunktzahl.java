@@ -379,13 +379,11 @@ public class Gleitpunktzahl {
 			}
 			return result;
 		}
-		int sharedExp;
-		int denormalizedMantisse;
 		// todo, Sonderfaelle
 		result = new Gleitpunktzahl();
 		denormalisiere(this, r);
-		// r = m2, this = m1
-		denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
+
+		result.mantisse = this.mantisse + r.mantisse;
 
 		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
 		result.vorzeichen = this.vorzeichen;
@@ -439,30 +437,31 @@ public class Gleitpunktzahl {
 			boolean vorzeichen;
 			// this > r
 			if (this.exponent > r.exponent || (this.exponent == r.exponent && this.mantisse > r.mantisse)) {
-				// -2 - (+3)
-				// 2 + - 3 = 5
-				result = this.add(r);
-
+				// 5 - (-3) = 5 + 3 = 8 -> korrekt
+				// -5 - (+3) = - (5 + 3) = -8 -> korrekt
+				vorzeichen = this.vorzeichen;
 			} else {
 				// r >= this
 				vorzeichen = r.vorzeichen;
-				this.vorzeichen = false;
-				r.vorzeichen = false;
-				result = r.add(this);
-				result.vorzeichen = vorzeichen;
 			}
+			this.vorzeichen = false;
+			r.vorzeichen = false;
+			result = r.add(this);
+			result.vorzeichen = vorzeichen;
 			return result;
 		}
-		int sharedExp;
-		int denormalizedMantisse;
-		// todo, Sonderfaelle
+
 		result = new Gleitpunktzahl();
 		denormalisiere(this, r);
 		// r = m2, this = m1
-		denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
+		if(this.mantisse > r.mantisse) {
+			result.mantisse = this.mantisse - r.mantisse;
+			result.vorzeichen = this.vorzeichen;
+		} else{
+			result.mantisse = r.mantisse - this.mantisse;
+			result.vorzeichen = !r.vorzeichen;
+		}
 
-		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
-		result.vorzeichen = this.vorzeichen;
 		result.normalisiere();
 		return result;
 	}
