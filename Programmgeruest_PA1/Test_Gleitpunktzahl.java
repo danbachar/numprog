@@ -78,9 +78,6 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 
-			/*************
-			 * Eigene Tests einfuegen
-			 */
             // Test: num - 0 = num
             x = new Gleitpunktzahl(1);
             y = new Gleitpunktzahl(0);
@@ -159,8 +156,6 @@ public class Test_Gleitpunktzahl {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
-			System.out.println("\n\nEIGENE TESTS EINFÜGEN!!!!!!!\n\n");
-
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
 		}
@@ -187,12 +182,6 @@ public class Test_Gleitpunktzahl {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
-
-			/*************
-			 * Eigene Tests einfuegen
-			 */
-
-			System.out.println("\n\nEIGENE TESTS EINFÜGEN!!!!!!!\n\n");
 
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
@@ -221,12 +210,6 @@ public class Test_Gleitpunktzahl {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
-
-			/*************
-			 * Eigene Tests einfuegen
-			 */
-
-			System.out.println("\n\nEIGENE TESTS EINFÜGEN!!!!!!!\n\n");
 
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis in der Klasse Gleitpunktzahl!!\n");
