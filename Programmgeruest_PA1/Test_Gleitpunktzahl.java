@@ -216,12 +216,13 @@ public class Test_Gleitpunktzahl {
 		x = new Gleitpunktzahl(12);
 		y = new Gleitpunktzahl(0.5);
 
-		x.setSizeMantisse(2);
-		y.setSizeMantisse(2);
+		Gleitpunktzahl.setSizeMantisse(2);
 
-		gleiterg.setDouble(12);
+		gleitref = new Gleitpunktzahl(12);
 
-		if(x.add(y).compareAbsTo(gleiterg)==0){
+		gleiterg = x.sub(y);
+
+		if(gleiterg.compareAbsTo(gleitref)==0){
 			System.out.println("    Richtiges Ergebnis\n");
 		}else{
 			System.out.println("    Fehler!\n      Es wurde gerechnet:            " + x + " + " + y);
@@ -234,7 +235,7 @@ public class Test_Gleitpunktzahl {
 		Groesse der Mantisse: 2
 		testet das Resultat von 12 + 2:
 		1.1*2^3 + 1.0*2^1 =
-		(110 + 1)*2^1 =
+		(110 + 1)*2^1 = TODO: shouldn't it be (110 * 2^(3-1) + 1) * 2^1?
 		(111)*2^1 =
 		(1.11)*2^3 =
 		(1.11 + 0.1)*2^3 =    //+0.1 wegen der Rundung
@@ -243,17 +244,14 @@ public class Test_Gleitpunktzahl {
 		x = new Gleitpunktzahl(12);
 		y = new Gleitpunktzahl(2);
 
-		x.setSizeMantisse(2);
-		y.setSizeMantisse(2);
+        gleitref = new Gleitpunktzahl(16);
+		gleiterg = x.add(y);
 
-		gleiterg.setDouble(16);
-
-		if(x.add(y).compareAbsTo(gleiterg)==0){
-			System.out.println("    Richtiges Ergebnis\n");
-		}else{
-			System.out.println("    Fehler!\n      Es wurde gerechnet:            " + x + " + " + y);
-			System.out.println("      Die Mantisse im Test ist auf Groesse 2 gesetzt.");
-			System.out.println("      Das korrekte Ergebniss lautet: " + gleiterg + "\n");
+		if(gleiterg.compareAbsTo(gleitref) !=0 || gleiterg.vorzeichen != gleitref.vorzeichen){
+			printAdd(x.toString(), y.toString());
+            printErg(gleiterg.toString(), gleitref.toString());
+		} else{
+            System.out.println("    Richtiges Ergebnis\n");
 		}
 
 
