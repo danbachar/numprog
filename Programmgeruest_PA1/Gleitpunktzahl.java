@@ -317,12 +317,6 @@ public class Gleitpunktzahl {
 	 * gespeichert, normiert, und dieses wird zurueckgegeben.
 	 */
 	public Gleitpunktzahl add(Gleitpunktzahl r) {
-		// Normalform (-1)^v * m^e
-		// Nonormalform 1337? (-1)^v * m * 2^t
-		/*
-		 * TODO: hier ist die Operation add zu implementieren. Verwenden Sie die
-		 * Funktionen normalisiere und denormalisiere. Achten Sie auf Sonderfaelle!
-		 */
 
 		// 1. Find out larger number
 		// 2. Denormalise it (bring to same exponent)
@@ -331,9 +325,12 @@ public class Gleitpunktzahl {
 
 		// Wenn Vorzeichen nicht gleich führe substraktion mit entsprechenden Vorzeichen
 		// aus
+		Gleitpunktzahl result = detectExceptionalSt(r);
+		if(result != null){
+			return result;
+		}
 		if (this.vorzeichen != r.vorzeichen) {
 			// TODO: think about Vorzeichen, when to flip what
-			Gleitpunktzahl result;
 			boolean vorzeichen;
 			// this > r
 			if (this.exponent > r.exponent || (this.exponent == r.exponent && this.mantisse > r.mantisse)) {
@@ -356,6 +353,31 @@ public class Gleitpunktzahl {
 		int sharedExp;
 		int denormalizedMantisse;
 		// todo, Sonderfaelle
+		result = new Gleitpunktzahl();
+
+		// r = m2, this = m1
+		if (this.exponent > r.exponent) {
+			sharedExp = r.exponent;
+			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
+			denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
+			result.mantisse = denormalizedMantisse;
+			result.exponent = sharedExp;
+
+		} else {
+			sharedExp = this.exponent;
+			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
+			denormalizedMantisse = r.mantisse * (int) Math.pow(2, r.exponent - sharedExp) + this.mantisse;
+			result.mantisse = denormalizedMantisse;
+			result.exponent = sharedExp;
+
+		}
+		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
+		result.vorzeichen = this.vorzeichen;
+		result.normalisiere();
+		return result;
+	}
+
+	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r){
 		if (r.isInfinite()) {
 			return r;
 		}
@@ -377,28 +399,7 @@ public class Gleitpunktzahl {
 			nan.setNaN();
 			return nan;
 		}
-		Gleitpunktzahl result = new Gleitpunktzahl();
-
-		// r = m2, this = m1
-		if (this.exponent > r.exponent) {
-			sharedExp = r.exponent;
-			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
-			denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
-			result.mantisse = denormalizedMantisse;
-			result.exponent = sharedExp;
-			result.vorzeichen = this.vorzeichen == true; // vorzeichen true bedeutet negative zahl
-		} else {
-			sharedExp = this.exponent;
-			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
-			denormalizedMantisse = r.mantisse * (int) Math.pow(2, r.exponent - sharedExp) + this.mantisse;
-			result.mantisse = denormalizedMantisse;
-			result.exponent = sharedExp;
-			result.vorzeichen = r.vorzeichen == true; // vorzeichen true bedeutet negative zahl
-		}
-		// den Vorzeichen nicht vergessen
-		result.vorzeichen = this.vorzeichen;
-		result.normalisiere();
-		return result;
+		return null;
 	}
 
 	/**
