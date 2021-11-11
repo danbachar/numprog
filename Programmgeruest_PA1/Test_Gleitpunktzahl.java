@@ -7,7 +7,106 @@ public class Test_Gleitpunktzahl {
 
 	public static void main(String[] argv) {
 		test_Gleitpunktzahl();
+		test_eigentests();
+	}
 
+	public static void test_eigentests() {
+		Gleitpunktzahl x;
+		Gleitpunktzahl y;
+		Gleitpunktzahl gleitref = new Gleitpunktzahl();
+		Gleitpunktzahl gleiterg;
+
+		// Test: 1.5 + 2.25 = 3.75
+		x = new Gleitpunktzahl(1.5);
+		y = new Gleitpunktzahl(2.25);
+
+		gleitref = new Gleitpunktzahl((1.5 + 2.25));
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+		// Test: num - 0 = num
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+
+		gleitref = new Gleitpunktzahl((1 - 0));
+		gleiterg = x.sub(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+		// Test: num + Infinity = Infinity
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setInfinite(false);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(false);
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+		// Test: 0 - num = -num
+		y = new Gleitpunktzahl(1);
+		x = new Gleitpunktzahl(0);
+
+		gleitref = new Gleitpunktzahl((0 - 1));
+		gleiterg = x.sub(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+		// Test: num + NaN = NaN
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setNaN();
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setNaN();
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+		// Test: num - NaN = NaN
+		x = new Gleitpunktzahl(1);
+		y = new Gleitpunktzahl(0);
+		y.setNaN();
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setNaN();
+
+		gleiterg = x.sub(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printSub(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
 	}
 
 	public static void test_Gleitpunktzahl() {
@@ -78,84 +177,6 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 
-            // Test: num - 0 = num
-            x = new Gleitpunktzahl(1);
-            y = new Gleitpunktzahl(0);
-
-            gleitref = new Gleitpunktzahl((1-0));
-            gleiterg = x.sub(y);
-            // Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-            // Test: num + Infinity = Infinity
-            x = new Gleitpunktzahl(1);
-            y = new Gleitpunktzahl(0);
-            y.setInfinite(false);
-
-            gleitref = new Gleitpunktzahl(0);
-            gleitref.setNaN();
-            
-            gleiterg = x.add(y);
-            // Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-            // Test: 0 - num = -num
-            y = new Gleitpunktzahl(1);
-            x = new Gleitpunktzahl(0);
-
-            gleitref = new Gleitpunktzahl((0-1));
-            gleiterg = x.sub(y);
-            // Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-            // Test: num + NaN = NaN
-            x = new Gleitpunktzahl(1);
-            y = new Gleitpunktzahl(0);
-            y.setNaN();
-
-            gleitref = new Gleitpunktzahl(0);
-            gleitref.setNaN();
-
-            gleiterg = x.add(y);
-            // Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-            // Test: num - NaN = NaN
-            x = new Gleitpunktzahl(1);
-            y = new Gleitpunktzahl(0);
-            y.setNaN();
-
-            gleitref = new Gleitpunktzahl(0);
-            gleitref.setNaN();
-            
-            gleiterg = x.sub(y);
-            // Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
 		}
@@ -230,3 +251,8 @@ public class Test_Gleitpunktzahl {
 				+ checkref + "\n");
 	}
 }
+
+// SONDERFAELLE
+// 1 ist 1.0 * 2^0
+// 2^-o ist [0.5- 1.0) * 2^-127,
+// < 2^-o ist 0

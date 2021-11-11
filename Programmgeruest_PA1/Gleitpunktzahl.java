@@ -293,9 +293,31 @@ public class Gleitpunktzahl {
 			throw new IllegalStateException();
 		}
 
+		// TODO: make sure mantisse has 1 in front of it
+
+		// zu größe Zahl
 		while (this.mantisse > Math.pow(2, sizeMantisse) - 1) {
 			this.exponent++;
+			if (this.mantisse % 2 == 1) {
+				this.mantisse += 2;
+
+			}
 			this.mantisse >>= 1;
+		}
+
+		while (this.mantisse < Math.pow(2, sizeMantisse - 1)) {
+			if (exponent > 0) {
+				this.mantisse <<= 1;
+				exponent--;
+			} else { // exponent = 0, eig exponent = 0-o = -o
+				if (this.mantisse < Math.pow(2, sizeMantisse - 2)) { // 1 Stelle in der Mantisse - Vorkommazahl, zweite
+																		// - erste Nachkommazahl - 0.5
+					this.setNull();
+				} else {
+					this.mantisse = 1; // 1 * 2^(-o)
+				}
+				return;
+			}
 		}
 	}
 
@@ -308,6 +330,13 @@ public class Gleitpunktzahl {
 		/*
 		 * TODO: hier ist die Operation denormalisiere zu implementieren.
 		 */
+		if (a.exponent > b.exponent) {
+			a.mantisse = a.mantisse * (int) Math.pow(2, a.exponent - b.exponent);
+			a.exponent = b.exponent;
+		} else {
+			b.mantisse = b.mantisse * (int) Math.pow(2, b.exponent - a.exponent);
+			b.exponent = a.exponent;
+		}
 	}
 
 	/**
@@ -326,7 +355,7 @@ public class Gleitpunktzahl {
 		// Wenn Vorzeichen nicht gleich führe substraktion mit entsprechenden Vorzeichen
 		// aus
 		Gleitpunktzahl result = detectExceptionalSt(r);
-		if(result != null){
+		if (result != null) {
 			return result;
 		}
 		if (this.vorzeichen != r.vorzeichen) {
@@ -354,30 +383,17 @@ public class Gleitpunktzahl {
 		int denormalizedMantisse;
 		// todo, Sonderfaelle
 		result = new Gleitpunktzahl();
-
+		denormalisiere(this, r);
 		// r = m2, this = m1
-		if (this.exponent > r.exponent) {
-			sharedExp = r.exponent;
-			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
-			denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
-			result.mantisse = denormalizedMantisse;
-			result.exponent = sharedExp;
+		denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
 
-		} else {
-			sharedExp = this.exponent;
-			// TODO: Vorzeichen überprüfen bzw if()... else... einfügen
-			denormalizedMantisse = r.mantisse * (int) Math.pow(2, r.exponent - sharedExp) + this.mantisse;
-			result.mantisse = denormalizedMantisse;
-			result.exponent = sharedExp;
-
-		}
 		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
 		result.vorzeichen = this.vorzeichen;
 		result.normalisiere();
 		return result;
 	}
 
-	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r){
+	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r) {
 		if (r.isInfinite()) {
 			return r;
 		}
@@ -414,7 +430,41 @@ public class Gleitpunktzahl {
 		 * Funktionen normalisiere und denormalisiere. Achten Sie auf Sonderfaelle!
 		 */
 
-		return new Gleitpunktzahl();
+		Gleitpunktzahl result = detectExceptionalSt(r);
+		if (result != null) {
+			return result;
+		}
+		if (this.vorzeichen != r.vorzeichen) {
+			// TODO: think about Vorzeichen, when to flip what
+			boolean vorzeichen;
+			// this > r
+			if (this.exponent > r.exponent || (this.exponent == r.exponent && this.mantisse > r.mantisse)) {
+				// -2 - (+3)
+				// 2 + - 3 = 5
+				result = this.add(r);
+
+			} else {
+				// r >= this
+				vorzeichen = r.vorzeichen;
+				this.vorzeichen = false;
+				r.vorzeichen = false;
+				result = r.add(this);
+				result.vorzeichen = vorzeichen;
+			}
+			return result;
+		}
+		int sharedExp;
+		int denormalizedMantisse;
+		// todo, Sonderfaelle
+		result = new Gleitpunktzahl();
+		denormalisiere(this, r);
+		// r = m2, this = m1
+		denormalizedMantisse = this.mantisse * (int) Math.pow(2, this.exponent - sharedExp) + r.mantisse;
+
+		// den Vorzeichen nicht vergessen, vorzeichen true bedeutet negative zahl
+		result.vorzeichen = this.vorzeichen;
+		result.normalisiere();
+		return result;
 	}
 
 	/**
