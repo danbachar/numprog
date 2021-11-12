@@ -18,13 +18,8 @@ public class FastMath {
 	 * In literature, several of those constants for floats or doubles can be found.
 	 * There's no optimal constant for all cases.
 	 */
-
-	/*
-	The initial magic number was: 1024. Setting the magic number to 1000
-	*/
-	private static int MAGIC_NUMBER = 1024; // 8 mantissa bits and 4 exponent bits
-
-	
+	private static int MAGIC_NUMBER = 1024; 
+ 
 
 	/**
 	 * belegt die MAGIC_NUMBER mit dem Wert magic
@@ -68,7 +63,7 @@ public class FastMath {
 		res /= 2;
 
 		// 3. Schritt
-		res = MAGIC_NUMBER - res;
+		res = FastMath.MAGIC_NUMBER - res;
 
 		// 4. Schritt
 		Gleitpunktzahl resultNumber = iEEEToGleitpunktzahl(res);
