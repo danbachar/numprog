@@ -30,14 +30,135 @@ public class Test_FastInverse {
 		// first trying out manually, setting the magic number to 1000
 		//
 		//FastMath.setMagic(1597463007);
-		Gleitpunktzahl.setSizeExponent(2); //changed from 4 to 2
-		Gleitpunktzahl.setSizeMantisse(8);
+		// Gleitpunktzahl.setSizeExponent(2); //changed from 4 to 2
+		// Gleitpunktzahl.setSizeMantisse(8);
 		//FastMath.setMagic(0);
 		// findGoodMagicNumber()
 
 		Gleitpunktzahl.setSizeExponent(anzBitsExponent);
 		Gleitpunktzahl.setSizeMantisse(anzBitsMantisse);
 		FastMath.setMagic(MAGIC_NUMBER);
+
+        Gleitpunktzahl num;
+		Gleitpunktzahl gleitref;
+		Gleitpunktzahl gleiterg;
+
+        System.out.println("Test 1/sqrt(4)");
+		num = new Gleitpunktzahl(4);
+        gleitref  = new Gleitpunktzahl(0.5);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(9)");
+		num = new Gleitpunktzahl(9);
+        gleitref  = new Gleitpunktzahl(0.3333333333333);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(16)");
+		num = new Gleitpunktzahl(16);
+        gleitref  = new Gleitpunktzahl(0.25);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(25)");
+		num = new Gleitpunktzahl(25);
+        gleitref  = new Gleitpunktzahl(0.2);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(36)");
+		num = new Gleitpunktzahl(36);
+        gleitref  = new Gleitpunktzahl(0.16666666666);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(49)");
+		num = new Gleitpunktzahl(49);
+        gleitref  = new Gleitpunktzahl(0.14285714285);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(64)");
+		num = new Gleitpunktzahl(64);
+        gleitref  = new Gleitpunktzahl(0.125);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
+        System.out.println("Test 1/sqrt(81)");
+		num = new Gleitpunktzahl(81);
+        gleitref  = new Gleitpunktzahl(0.11111111111);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+        
+        System.out.println("Test 1/sqrt(100)");
+		num = new Gleitpunktzahl(100);
+        gleitref  = new Gleitpunktzahl(0.1);
+
+		gleiterg = FastMath.invSqrt(num);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printInvSqrt(num.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
 
 		int numOfSamplingPts = 1001;
 		float[] xData = new float[numOfSamplingPts];
@@ -109,5 +230,14 @@ public class Test_FastInverse {
 		}
 		System.out.println("The smallest rel error is " + min_rel_error + ", the magic number is " + numberRel);
 		System.out.println("The smallest abs error is " + min_abs_error + ", the magic number is " + numberAbs);
+	}
+
+    private static void printInvSqrt(String x) {
+        System.out.println("    Fehler!\n      Es wurde gerechnet:            1/sqrt(" + x + ")");
+    }
+
+    private static void printErg(String erg, String checkref) {
+		System.out.println("      Ihr Ergebnis lautet:           " + erg + "\n      Das Korrekte Ergebnis lautet:  "
+				+ checkref + "\n");
 	}
 }
