@@ -18,7 +18,7 @@ public class FastMath {
 	 * In literature, several of those constants for floats or doubles can be found.
 	 * There's no optimal constant for all cases.
 	 */
-	private static int MAGIC_NUMBER = 1024; 
+	private static int MAGIC_NUMBER = 1331;
  
 
 	/**
@@ -55,6 +55,11 @@ public class FastMath {
 			x.setNaN();
 			return x;
 		}
+
+        if (x.isInfinite()) {
+            x.setNull();
+            return x;
+        }
 
 		// 1. Schritt
 		int res = gleitpunktzahlToIEEE(x);
