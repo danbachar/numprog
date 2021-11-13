@@ -487,7 +487,6 @@ public class Gleitpunktzahl {
 			return result;
 		}
 		if (this.vorzeichen != r.vorzeichen) {
-			// TODO: think about Vorzeichen, when to flip what
 			boolean vorzeichen;
 			// this > r
 			if (this.exponent > r.exponent || (this.exponent == r.exponent && this.mantisse > r.mantisse)) {
@@ -496,7 +495,7 @@ public class Gleitpunktzahl {
 				vorzeichen = this.vorzeichen;
 			} else {
 				// r >= this
-				vorzeichen = r.vorzeichen;
+				vorzeichen = !r.vorzeichen;
 			}
 			this.vorzeichen = false;
 			r.vorzeichen = false;
