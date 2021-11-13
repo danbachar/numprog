@@ -477,6 +477,28 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 
+			// -Inf + (+Inf)
+			System.out.println("Test: Sonderfall -Inf + (+Inf)");
+			x = new Gleitpunktzahl(0);
+			x.setInfinite(true);
+
+			y = new Gleitpunktzahl(0);
+			y.setInfinite(false);
+
+			// Referenzwerte setzen
+			gleitref.setNaN();
+
+			// Berechnung mit der Methode des Studenten durchfuehren
+			gleiterg = x.add(y);
+
+			// Test, ob Ergebnis korrekt
+			if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+				printSub(x.toString(), y.toString());
+				printErg(gleiterg.toString(), gleitref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+
             // -inf - (-inf)
 			System.out.println("Test: Sonderfaelle");
 			x = new Gleitpunktzahl(-1.0 / 0.0);

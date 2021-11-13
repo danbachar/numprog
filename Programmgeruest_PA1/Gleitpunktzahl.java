@@ -298,9 +298,9 @@ public class Gleitpunktzahl {
 			this.exponent++;
 
 			if (this.exponent >= Gleitpunktzahl.maxExponent) {
-                this.setInfinite(this.vorzeichen);
-                return;
-            }
+				this.setInfinite(this.vorzeichen);
+				return;
+			}
 			if (this.mantisse % 2 == 1) {
 				this.mantisse += 2;
 
@@ -359,13 +359,9 @@ public class Gleitpunktzahl {
 		// aus
 		Gleitpunktzahl result = detectExceptionalSt(r, false);
 		if (result != null) {
-            if (result.exponent >= Gleitpunktzahl.maxExponent) {
-                result.setInfinite(result.vorzeichen);
-            }
 			return result;
 		}
 		if (this.vorzeichen != r.vorzeichen) {
-			// TODO: think about Vorzeichen, when to flip what
 			boolean vorzeichen;
 			// this > r
 			if (this.exponent > r.exponent || (this.exponent == r.exponent && this.mantisse > r.mantisse)) {
@@ -385,92 +381,92 @@ public class Gleitpunktzahl {
 			}
 			return result;
 		}
-		// todo, Sonderfaelle
 		result = new Gleitpunktzahl();
+
 		denormalisiere(this, r);
 
 		result.mantisse = this.mantisse + r.mantisse;
 
 		result.vorzeichen = this.vorzeichen;
-        result.exponent = this.exponent;
+		result.exponent = this.exponent;
 		result.normalisiere();
 
-        if (result.exponent >= Gleitpunktzahl.maxExponent) {
-            result.setInfinite(result.vorzeichen);
-        }
+		if (result.exponent >= Gleitpunktzahl.maxExponent) {
+			result.setInfinite(result.vorzeichen);
+		}
 		return result;
 	}
 
-    // +Inf+(+Inf) = Inf
-    // +Inf+(-Inf) = NaN
-    // +Inf-(+Inf) = NaN
-    // +Inf-(-Inf) = Inf
-    // -Inf+(+Inf) = NaN
-    // -Inf+(-Inf) = -Inf
-    // -Inf-(+Inf) = -Inf
-    // -Inf-(-Inf) = NaN
-    // Inf+0 = Inf
-    // Inf-0 = Inf
-    // 0-Inf = -Inf
-    // 0+Inf = +Inf
+	// +Inf+(+Inf) = Inf
+	// +Inf+(-Inf) = NaN
+	// +Inf-(+Inf) = NaN
+	// +Inf-(-Inf) = Inf
+	// -Inf+(+Inf) = NaN
+	// -Inf+(-Inf) = -Inf
+	// -Inf-(+Inf) = -Inf
+	// -Inf-(-Inf) = NaN
+	// Inf+0 = Inf
+	// Inf-0 = Inf
+	// 0-Inf = -Inf
+	// 0+Inf = +Inf
 	private Gleitpunktzahl detectExceptionalSt(Gleitpunktzahl r, boolean isSubstraction) {
-        // code could have been shortened, leaving it like this for readability
+		// code could have been shortened, leaving it like this for readability
 		if (r.isInfinite()) {
-            // r is infinity
-            if (this.isInfinite()) {
-                if (this.vorzeichen != r.vorzeichen) {
-                    if (isSubstraction) {
-                        // -Inf-(+Inf) = -Inf
-                        // +Inf-(-Inf) = Inf
-                    } else {
-                        // underschiedliche Vorzeichen, addition, both infinity
-                        // special case -> NaN
-                        // +Inf+(-Inf) = NaN
-                        // -Inf+(+Inf) = NaN
-                        this.setNaN();
-                    }
-                    return this;
-                } else {
-                    // same sign -> either + or -, but check 
-                    if (this.vorzeichen) {
-                        // this and r are both negative, if substraction -> NaN
-                        if (isSubstraction) {
-                            // -Inf-(-Inf) = NaN
-                            this.setNaN();
-                        } else {
-                            // -Inf+(-Inf) = -Inf
-                        }
-                        return this;
-                    } else {
-                        // this and r are both positive, if substraction -> NaN
-                        if (isSubstraction) {
-                            // +Inf-(+Inf) = NaN
-                            this.setNaN();
-                        } else {
-                            // +Inf+(+Inf) = Inf
-                        }
-                    }
-                }
-            } else if (this.isNull()) {
-                if (isSubstraction) {
-                    r.vorzeichen = !r.vorzeichen;
-                }
-            } else {
-                if (isSubstraction) {
-                    // num - (+inf) = -inf
-                    r.vorzeichen = !r.vorzeichen;
-                }
-            }
-            return r;
+			// r is infinity
+			if (this.isInfinite()) {
+				if (this.vorzeichen != r.vorzeichen) {
+					if (isSubstraction) {
+						// -Inf-(+Inf) = -Inf
+						// +Inf-(-Inf) = Inf
+					} else {
+						// underschiedliche Vorzeichen, addition, both infinity
+						// special case -> NaN
+						// +Inf+(-Inf) = NaN
+						// -Inf+(+Inf) = NaN
+						this.setNaN();
+					}
+					return this;
+				} else {
+					// same sign -> either + or -, but check
+					if (this.vorzeichen) {
+						// this and r are both negative, if substraction -> NaN
+						if (isSubstraction) {
+							// -Inf-(-Inf) = NaN
+							this.setNaN();
+						} else {
+							// -Inf+(-Inf) = -Inf
+						}
+						return this;
+					} else {
+						// this and r are both positive, if substraction -> NaN
+						if (isSubstraction) {
+							// +Inf-(+Inf) = NaN
+							this.setNaN();
+						} else {
+							// +Inf+(+Inf) = Inf
+						}
+					}
+				}
+			} else if (this.isNull()) {
+				if (isSubstraction) {
+					r.vorzeichen = !r.vorzeichen;
+				}
+			} else {
+				if (isSubstraction) {
+					// num - (+inf) = -inf
+					r.vorzeichen = !r.vorzeichen;
+				}
+			}
+			return r;
 		} else if (r.isNull()) {
-            return this;
-        } else if (r.isNaN()) {
-            return r;
-        } else if (this.isNaN()) {
-            return this;
-        } else if (this.isInfinite()) {
-            return this;
-        }
+			return this;
+		} else if (r.isNaN()) {
+			return r;
+		} else if (this.isNaN()) {
+			return this;
+		} else if (this.isInfinite()) {
+			return this;
+		}
 
 		return null;
 	}
@@ -512,14 +508,14 @@ public class Gleitpunktzahl {
 		result = new Gleitpunktzahl();
 		denormalisiere(this, r);
 		// r = m2, this = m1
-		if(this.mantisse > r.mantisse) {
+		if (this.mantisse > r.mantisse) {
 			result.mantisse = this.mantisse - r.mantisse;
 			result.vorzeichen = this.vorzeichen;
-		} else{
+		} else {
 			result.mantisse = r.mantisse - this.mantisse;
 			result.vorzeichen = !r.vorzeichen;
 		}
-        result.exponent = this.exponent;
+		result.exponent = this.exponent;
 		result.normalisiere();
 		return result;
 	}
