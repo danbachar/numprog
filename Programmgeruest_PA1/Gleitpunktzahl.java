@@ -463,6 +463,8 @@ public class Gleitpunktzahl {
             return r;
         } else if (this.isNaN()) {
             return this;
+        } else if (this.isInfinite()) {
+            return this;
         }
 
 		return null;

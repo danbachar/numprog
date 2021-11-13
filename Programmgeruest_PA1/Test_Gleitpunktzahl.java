@@ -78,6 +78,25 @@ public class Test_Gleitpunktzahl {
 			System.out.println("    Richtiges Ergebnis\n");
 		}
 
+        // Test: Infinity + 7 = Infinity
+        System.out.println("Test Infinity + 7 = Infinity");
+		x = new Gleitpunktzahl(0);
+        x.setInfinite(false);
+
+		y = new Gleitpunktzahl(7.0);
+
+		gleitref = new Gleitpunktzahl(0);
+		gleitref.setInfinite(false);
+
+		gleiterg = x.add(y);
+		// Test, ob Ergebnis korrekt
+		if (gleiterg.compareAbsTo(gleitref) != 0 || gleiterg.vorzeichen != gleitref.vorzeichen) {
+			printAdd(x.toString(), y.toString());
+			printErg(gleiterg.toString(), gleitref.toString());
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+
         // Test: num - (+Infinity) = -Infinity
         System.out.println("Test 1 - (+Infinity) = -Infinity");
 		x = new Gleitpunktzahl(1);
@@ -272,7 +291,7 @@ public class Test_Gleitpunktzahl {
 		 * Verglichen werden die BitFelder fuer Mantisse und Exponent und das Vorzeichen
 		 */
 		Gleitpunktzahl.setSizeMantisse(4);
-		Gleitpunktzahl.setSizeExponent(2);
+		Gleitpunktzahl.setSizeExponent(8);
 
 		Gleitpunktzahl x;
 		Gleitpunktzahl y;
