@@ -297,7 +297,7 @@ public class Gleitpunktzahl {
 		while (this.mantisse > Math.pow(2, sizeMantisse) - 1) {
 			this.exponent++;
 
-            if (this.exponent > Gleitpunktzahl.maxExponent) {
+			if (this.exponent >= Gleitpunktzahl.maxExponent) {
                 this.setInfinite(this.vorzeichen);
                 return;
             }
@@ -359,7 +359,7 @@ public class Gleitpunktzahl {
 		// aus
 		Gleitpunktzahl result = detectExceptionalSt(r, false);
 		if (result != null) {
-            if (result.exponent > Gleitpunktzahl.maxExponent) {
+            if (result.exponent >= Gleitpunktzahl.maxExponent) {
                 result.setInfinite(result.vorzeichen);
             }
 			return result;
@@ -395,7 +395,7 @@ public class Gleitpunktzahl {
         result.exponent = this.exponent;
 		result.normalisiere();
 
-        if (result.exponent > Gleitpunktzahl.maxExponent) {
+        if (result.exponent >= Gleitpunktzahl.maxExponent) {
             result.setInfinite(result.vorzeichen);
         }
 		return result;
