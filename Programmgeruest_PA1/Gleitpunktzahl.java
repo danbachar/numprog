@@ -296,6 +296,11 @@ public class Gleitpunktzahl {
 		// zu größe Zahl
 		while (this.mantisse > Math.pow(2, sizeMantisse) - 1) {
 			this.exponent++;
+
+            if (this.exponent > Gleitpunktzahl.maxExponent) {
+                this.setInfinite(this.vorzeichen);
+                return;
+            }
 			if (this.mantisse % 2 == 1) {
 				this.mantisse += 2;
 
