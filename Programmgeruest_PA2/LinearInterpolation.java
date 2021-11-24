@@ -124,7 +124,9 @@ public class LinearInterpolation implements InterpolationMethod {
         double xDifference = this.x[i] - this.x[i-1];
         double steigung = yDifference / xDifference;
 
-        return steigung * z;
+        double b = this.y[i] - steigung * this.x[i];
+
+        return steigung * z + b;
     }
 
 }
