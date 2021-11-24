@@ -78,6 +78,20 @@ public class LinearInterpolation implements InterpolationMethod {
         }
     }
 
+    private int findIndexOfNextGreaterXi(double z) {
+        int length = this.x.length;
+
+        double xi = z;
+        for (int i = 0; i < length; i++) {
+            xi = this.x[i];
+            if (xi > z) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     /**
      * {@inheritDoc} Liegt z ausserhalb der Stuetzgrenzen, werden die
      * aeussersten Werte y[0] bzw. y[n] zurueckgegeben. Liegt z zwischen den
@@ -90,8 +104,27 @@ public class LinearInterpolation implements InterpolationMethod {
      */
     @Override
     public double evaluate(double z) {
-        /* TODO: diese Methode ist zu implementieren */
-        return 0.0;
+        if (z < this.x[0]) {
+            return this.y[0];
+        }
+
+        int length = this.x.length;
+        if (z > this.x[length - 1]) {
+            return this.y[length-1];
+        }
+
+        int i = findIndexOfNextGreaterXi(z);
+        if (i == -1) {
+            // TODO: check if this can happen
+            return Double.NEGATIVE_INFINITY;
+        }
+
+        // found x_i+1
+        double yDifference = this.y[i] - this.y[i-1];
+        double xDifference = this.x[i] - this.x[i-1];
+        double steigung = yDifference / xDifference;
+
+        return steigung * z;
     }
 
 }
