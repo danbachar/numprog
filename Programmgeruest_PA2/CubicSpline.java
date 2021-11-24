@@ -1,5 +1,4 @@
 import java.util.Arrays;
-
 /**
  * Die Klasse CubicSpline bietet eine Implementierung der kubischen Splines. Sie
  * dient uns zur effizienten Interpolation von aequidistanten Stuetzpunkten.
@@ -22,7 +21,7 @@ public class CubicSpline implements InterpolationMethod {
     double[] y;
 
     /** zu berechnende Ableitunge an den Stuetzstellen */
-    double yprime[];
+    double[] yprime;
 
     /**
      * {@inheritDoc} Zusaetzlich werden die Ableitungen der stueckweisen
@@ -83,6 +82,31 @@ public class CubicSpline implements InterpolationMethod {
      */
     public void computeDerivatives() {
         /* TODO: diese Methode ist zu implementieren */
+        if (n <= 1)
+            return;
+
+        double[] sols = new double[n-1];
+        sols[0] = (3 / h) * (y[2] - y[0] - (h / 3) * yprime[0]) ;
+        if(n > 3){
+            // Case 3: more than 2 unknowns
+            for(int i = 1; i < n - 2; i ++){
+                sols[i] = y[i+2] - y[i];
+            }
+        }
+        if(n > 2){
+            sols[n-2] = 3 * (y[n] - y[n-2] - (h * yprime[n] / 3)) / h;
+        }
+
+
+        double[] lowerD = new double[n-2];
+        double[] middle = new double[n-1];
+        double[] upperD = new double[n-2];
+        Arrays.fill(lowerD, 1);
+        Arrays.fill(middle, 4);
+        Arrays.fill(upperD, 1);
+        TridiagonalMatrix matrix = new TridiagonalMatrix(lowerD, middle, upperD);
+        double[] answers = matrix.solveLinearSystem(sols);
+        System.arraycopy(answers, 0, yprime, 1, answers.length);
     }
 
     /**
@@ -93,7 +117,35 @@ public class CubicSpline implements InterpolationMethod {
      */
     @Override
     public double evaluate(double z) {
-        /* TODO: diese Methode ist zu implementieren */
-        return 0.0;
+        if(z > b){
+            return y[n];
+        }
+
+        if(z < a){
+            return y[0];
+        }
+        int lowerPointInd = 0;
+        //i) Find the interval
+        for(int i = 0; i < n; i++){
+            if(z >= a + h * i && z < a + h * (i+1)){
+                lowerPointInd = i;
+                break;
+            }
+        }
+        double transformed = (z - (a + h * lowerPointInd)) / h;
+        return q(transformed, lowerPointInd);
+    }
+
+    private double q(double t, int intervalBottom){
+
+        double H_0 = 1 - 3 * Math.pow(t, 2) + 2 * Math.pow(t, 3);
+        double H_1 = 3 * Math.pow(t, 2) - 2 * Math.pow(t, 3);
+        double H_2 = t - 2 * Math.pow(t, 2) + Math.pow(t, 3);
+        double H_3 = -1 * Math.pow(t, 2) + Math.pow(t, 3);
+
+        return y[intervalBottom] * H_0 +
+                y[intervalBottom + 1] * H_1 +
+                h * yprime[intervalBottom] * H_2 +
+                h * yprime[intervalBottom + 1] * H_3;
     }
 }
