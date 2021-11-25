@@ -10,12 +10,11 @@ public class Test {
      */
     public static void main(String[] args) {
         testNewton();
-        //testSplines();
-        //testFFT();
+        // testSplines();
+        // testFFT();
     }
 
     private static void testNewton() {
-
         double[] x = { -1, 1, 3 };
         double[] y = { -3, 1, -3 };
         NewtonPolynom p = new NewtonPolynom(x, y);
@@ -29,8 +28,7 @@ public class Test {
         double[] y = { 2, 0, 2, 3 };
         spl.init(-1, 2, 3, y);
         spl.setBoundaryConditions(9, 0);
-        System.out.println(Arrays.toString(spl.getDerivatives())
-                + " sollte sein: [9.0, -3.0, 3.0, 0.0].");
+        System.out.println(Arrays.toString(spl.getDerivatives()) + " sollte sein: [9.0, -3.0, 3.0, 0.0].");
     }
 
     public static void testFFT() {
@@ -45,8 +43,7 @@ public class Test {
         for (int i = 0; i < 4; i++) {
             System.out.println(v2[i]);
         }
-        System.out
-                .println("Richtig waeren gerundet: Eigene Beispiele ueberlegen");
+        System.out.println("Richtig waeren gerundet: Eigene Beispiele ueberlegen");
 
         System.out.println("*************************************\n");
     }
