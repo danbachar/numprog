@@ -114,6 +114,21 @@ public class NewtonPolynom implements InterpolationMethod {
         for(int i=0;i<n;i++){
             coefficients[i][0]=y[i];
         }        
+
+        //setting the rest of the coefficients to the correct values
+        for(int i=0;i<n;i++){
+            if(i<n-1){
+                for(int k=0; k<n;k++){
+                    if(k>0){
+                        coefficients[i][k] = (coefficients[i+1][k-1]-coefficients[i][k-1])/(x[i+k] - x[i]);
+                    }
+                }
+            }
+        }
+
+        //the problem with checking whether the value is 0.0 or not and then setting the value in the coefficients array
+        //to that is because the coefficient could also be 0.0
+        //another way of determining which coefficients should be done
     }
 
 
