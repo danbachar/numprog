@@ -22,6 +22,14 @@ public class NewtonPolynom implements InterpolationMethod {
     /**
      * die Diagonalen des Dreiecksschemas. Diese dividierten Differenzen werden
      * fuer die Erweiterung der Stuetzstellen benoetigt.
+     * 
+     * Repraesentation der Diagonalen von der Dreiecksschema
+     * von einer 3-Matrix
+     * [
+     * [0,1,2],
+     * [3,4],
+     * [5]
+     * ]
      */
     double[] f;
 
@@ -86,8 +94,28 @@ public class NewtonPolynom implements InterpolationMethod {
      * Es gilt immer: x und y sind gleich lang.
      */
     private void computeCoefficients(double[] y) {
-        /* TODO: diese Methode ist zu implementieren */
+
+
+        int n=y.length;
+        int numCoeff = 0;
+
+        //finding number of coefficients
+        for(int i=0;i<n;i++){
+            numCoeff+=n-i;
+        }
+
+        //setting the length of f
+        f = new double[numCoeff];
+
+        //temporary array for the coefficients for easier calculation, default value is 0.0
+        double[][] coefficients = new double[n][n];
+
+        //setting ci,0 to the y values
+        for(int i=0;i<n;i++){
+            coefficients[i][0]=y[i];
+        }        
     }
+
 
     /**
      * Gibt die Koeffizienten des Newton-Polynoms a zurueck
