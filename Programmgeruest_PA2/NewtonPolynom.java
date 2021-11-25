@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.util.Arrays;
 
 /**
@@ -22,14 +23,6 @@ public class NewtonPolynom implements InterpolationMethod {
     /**
      * die Diagonalen des Dreiecksschemas. Diese dividierten Differenzen werden
      * fuer die Erweiterung der Stuetzstellen benoetigt.
-     * 
-     * Repraesentation der Diagonalen von der Dreiecksschema
-     * von einer 3-Matrix
-     * [
-     * [0,1,2],
-     * [3,4],
-     * [5]
-     * ]
      */
     double[] f;
 
@@ -95,7 +88,6 @@ public class NewtonPolynom implements InterpolationMethod {
      */
     private void computeCoefficients(double[] y) {
 
-
         int n=y.length;
         int numCoeff = 0;
 
@@ -107,7 +99,7 @@ public class NewtonPolynom implements InterpolationMethod {
         //setting the length of f
         f = new double[numCoeff];
 
-        //temporary array for the coefficients for easier calculation, default value is 0.0
+        //the coefficient Schema
         double[][] coefficients = new double[n][n];
 
         //setting ci,0 to the y values
@@ -117,18 +109,31 @@ public class NewtonPolynom implements InterpolationMethod {
 
         //setting the rest of the coefficients to the correct values
         for(int i=0;i<n;i++){
-            if(i<n-1){
-                for(int k=0; k<n;k++){
-                    if(k>0){
-                        coefficients[i][k] = (coefficients[i+1][k-1]-coefficients[i][k-1])/(x[i+k] - x[i]);
-                    }
+            for(int k=0; k<n;k++){
+                if(i<n-1 && k-1>=0 && (i+k)<n && (x[i+k]-x[i])!=0){
+                     coefficients[i][k] = (coefficients[i+1][k-1]-coefficients[i][k-1])/(x[i+k] - x[i]);
                 }
             }
         }
 
-        //the problem with checking whether the value is 0.0 or not and then setting the value in the coefficients array
-        //to that is because the coefficient could also be 0.0
-        //another way of determining which coefficients should be done
+        //setting the value of a
+        a = new double[n];
+        for(int i=0;i<n;i++){
+            a[i] = coefficients[0][i];
+        }
+
+        /*
+        setting the value of of the diagonal, 
+        the diagonal is then used for computing the new coefficients for a newly added point
+
+        Am Ende steht die
+        Diagonale des Dreiecksschemas in der Membervariable f, 
+        also f[0],f[1],...,f[n] = [x0...x_n]f,[x1...x_n]f,...,[x_n]f.
+        */
+        f = new double[n];
+        for(int i=0;i<n;i++){
+            f[i] = coefficients[n-1-i][i];
+        }
     }
 
 
@@ -163,7 +168,33 @@ public class NewtonPolynom implements InterpolationMethod {
      *            neuer Stuetzwert
      */
     public void addSamplingPoint(double x_new, double y_new) {
-        /* TODO: diese Methode ist zu implementieren */
+
+        //adding x_new to the array
+        double[] arr = new double[x.length + 1];
+        System.arraycopy(x, 0, arr, 0, x.length);
+
+
+        //creating a new array for the coefficients
+        double[] coeff = new double[x.length + 1];
+        System.arraycopy(a, 0, coeff, 0, a.length);
+
+
+        //calculating the new diagonal
+        double[] diagonal = new double[f.length+1];
+
+        diagonal[0] = y_new;
+
+        for(int i=1;i<f.length+1;i++){
+            //x_i+k is always going to stay constant, equalling x_new. Due to the fact that the indexes are on the diagonal
+            diagonal[i] = (diagonal[i-1] - f[i-1])/(x_new - x[x.length-1-i]);
+        }
+        
+        //setting the new coefficient in the coefficient array
+        coeff[(f.length+1)-1] = diagonal[(f.length+1)-1];
+        arr = coeff;
+
+        //setting the f value
+        f = diagonal;
     }
 
     /**
@@ -174,6 +205,7 @@ public class NewtonPolynom implements InterpolationMethod {
     @Override
     public double evaluate(double z) {
         /* TODO: diese Methode ist zu implementieren */
+
         return 0.0;
     }
 }
