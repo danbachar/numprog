@@ -21,6 +21,14 @@ public class Test {
 
         System.out.println(p.evaluate(0) + " sollte sein: 0.0");
         System.out.println("-------------------------------");
+
+        //personal test
+        double[] x_2 = { -0, 1, 2 };
+        double[] y_2 = { 3, 0, 1 };
+        NewtonPolynom p_2 = new NewtonPolynom(x, y);
+        System.out.println("The coefficients are: " + p_2.a[0] + " " + p_2.a[1] + " " + p_2.a[2] + " ");
+        System.out.println("Personal test: " + p_2.evaluate(0) + " sollte sein: 3.0");
+        System.out.println("-------------------------------");
     }
 
     public static void testSplines() {

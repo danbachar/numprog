@@ -104,10 +104,16 @@ public class NewtonPolynom implements InterpolationMethod {
         }
 
         // setting the rest of the coefficients to the correct values
-        for (int i = 0; i < n; i++) {
-            for (int k = 0; k < n; k++) {
-                if (i < n - 1 && k - 1 >= 0 && (i + k) < n && (x[i + k] - x[i]) != 0) {
+        for (int k = 0; k<n; k++) {
+            for (int i = 0; i <n; i++) {
+                if ((i + k) < n && (x[i + k] - x[i]) != 0) {
                     coefficients[i][k] = (coefficients[i + 1][k - 1] - coefficients[i][k - 1]) / (x[i + k] - x[i]);
+                    /*
+                    System.out.print("(" + coefficients[i + 1][k - 1] + " - " + coefficients[i][k - 1] + ")/(" + x[i + k] + " - " +  x[i] + ")");
+                    //printing for debugging purposes
+                    System.out.print("C_" + i + "," + k + " "+ coefficients[i][k] + "  ,");
+                    //bug in the above code. We are calculating, using coefficients we have not already calculated.
+                    */
                 }
             }
         }
@@ -117,7 +123,6 @@ public class NewtonPolynom implements InterpolationMethod {
         for (int i = 0; i < n; i++) {
             a[i] = coefficients[0][i];
         }
-
         /*
          * setting the value of of the diagonal, the diagonal is then used for computing
          * the new coefficients for a newly added point
@@ -219,10 +224,14 @@ public class NewtonPolynom implements InterpolationMethod {
         //multiplying the x's together
         for(int i=1;i<n;i++){
             double mul = a[i];
+            //System.out.print("c_" + i + a[i] + " ");
+            //Based on the above line, we get c[0] = -3, c[1] = 2, c[3] = -0.5 (This is the wrong result)
+
             //The product of the (x-x0)(x-x1)...
-            for(int j=0;j<i;j++){
+            for(int j=0;j<i;j++){    //changed j<i to j<=i, due to this the printed result is 6.5
                 mul*=(z-x[j]);
             }
+            
             res+=mul;
         }
 
