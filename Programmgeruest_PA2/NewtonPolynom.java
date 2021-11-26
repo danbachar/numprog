@@ -101,6 +101,8 @@ public class NewtonPolynom implements InterpolationMethod {
         // setting ci,0 to the y values
         for (int i = 0; i < n; i++) {
             coefficients[i][0] = y[i];
+
+            System.out.println("c_" + i + ",0 " + coefficients[i][0] + "The values of y are " + y[i] + ", ");
         }
 
         // setting the rest of the coefficients to the correct values
@@ -109,11 +111,11 @@ public class NewtonPolynom implements InterpolationMethod {
                 if ((i + k) < n && (x[i + k] - x[i]) != 0) {
                     coefficients[i][k] = (coefficients[i + 1][k - 1] - coefficients[i][k - 1]) / (x[i + k] - x[i]);
                     /*
-                    System.out.print("(" + coefficients[i + 1][k - 1] + " - " + coefficients[i][k - 1] + ")/(" + x[i + k] + " - " +  x[i] + ")");
-                    //printing for debugging purposes
-                    System.out.print("C_" + i + "," + k + " "+ coefficients[i][k] + "  ,");
                     //bug in the above code. We are calculating, using coefficients we have not already calculated.
                     */
+                    System.out.print("(" + coefficients[i + 1][k - 1] + " - " + coefficients[i][k - 1] + ")/(" + x[i + k] + " - " +  x[i] + ")");
+                    //printing for debugging purposes
+                    System.out.print(" C_" + i + "," + k + " "+ coefficients[i][k] + "  ,");
                 }
             }
         }

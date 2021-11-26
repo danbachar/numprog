@@ -10,6 +10,7 @@ public class Test {
      */
     public static void main(String[] args) {
         testNewton();
+        testNewtonAddingSample();
         // testSplines();
         // testFFT();
     }
@@ -23,12 +24,26 @@ public class Test {
         System.out.println("-------------------------------");
 
         //personal test
-        double[] x_2 = { -0, 1, 2 };
+        double[] x_2 = { 0, 1, 2 };
         double[] y_2 = { 3, 0, 1 };
-        NewtonPolynom p_2 = new NewtonPolynom(x, y);
+        NewtonPolynom p_2 = new NewtonPolynom(x_2, y_2);
         System.out.println("The coefficients are: " + p_2.a[0] + " " + p_2.a[1] + " " + p_2.a[2] + " ");
         System.out.println("Personal test: " + p_2.evaluate(0) + " sollte sein: 3.0");
         System.out.println("-------------------------------");
+
+        //
+    }
+
+    private static void testNewtonAddingSample(){
+        System.out.println("Adding new sampling point:");
+        double[] x_2 = { 0, 1, 2 };
+        double[] y_2 = { 3, 0, 1 };
+        NewtonPolynom p_2 = new NewtonPolynom(x_2, y_2);
+        p_2.addSamplingPoint(1.5, 0);
+        System.out.println("The coefficients are: " + p_2.a[0] + " " + p_2.a[1] + " " + p_2.a[2] + " " + p_2.a[3]);
+        System.out.println("Personal test: " + p_2.evaluate(0) + " sollte sein: 3.0");
+        System.out.println("-------------------------------");
+
     }
 
     public static void testSplines() {
