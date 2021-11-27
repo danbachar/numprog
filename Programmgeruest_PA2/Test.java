@@ -23,7 +23,7 @@ public class Test {
         System.out.println(p.evaluate(0) + " sollte sein: 0.0");
         System.out.println("-------------------------------");
 
-        //personal test
+        // personal test
         double[] x_2 = { 0, 1, 2 };
         double[] y_2 = { 3, 0, 1 };
         NewtonPolynom p_2 = new NewtonPolynom(x_2, y_2);
@@ -31,10 +31,20 @@ public class Test {
         System.out.println("Personal test: " + p_2.evaluate(0) + " sollte sein: 3.0");
         System.out.println("-------------------------------");
 
-        //
+        // Test dividierte Differenzen
+        double[] x_3 = { 1, 3 };
+        double[] y_3 = { 2.0, -5.0 };
+        NewtonPolynom p_3 = new NewtonPolynom(x_3, y_3);
+
+        System.out.println("Divided differences:");
+
+        for (int i = 0; i < p_3.f.length; i++) {
+            System.out.println(p_3.f[i] + " ");
+        }
+
     }
 
-    private static void testNewtonAddingSample(){
+    private static void testNewtonAddingSample() {
         System.out.println("Adding new sampling point:");
         double[] x_2 = { 0, 1, 2 };
         double[] y_2 = { 3, 0, 1 };

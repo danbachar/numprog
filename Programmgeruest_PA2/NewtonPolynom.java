@@ -128,6 +128,13 @@ public class NewtonPolynom implements InterpolationMethod {
         for (int i = 0; i < n; i++) {
             f[i] = coefficients[n - 1 - i][i];
         }
+
+        //flipping the divided differences for the test
+        double[] temp  = new double[f.length];
+        for(int i=0;i<f.length;i++){
+            temp[i] = f[f.length-1-i];
+        }
+        f = temp;
     }
 
     /**
@@ -161,6 +168,14 @@ public class NewtonPolynom implements InterpolationMethod {
         double[] arr = new double[x.length + 1];
         System.arraycopy(x, 0, arr, 0, x.length);
         arr[(x.length + 1) - 1] = x_new;
+
+        //flipping the flipped divided differences in order no to change the code below
+        //flipping the divided differences for the test
+        double[] temp  = new double[f.length];
+        for(int i=0;i<f.length;i++){
+            temp[i] = f[f.length-1-i];
+        }
+        f = temp;
 
         // creating a new array for the coefficients
         double[] coeff = new double[x.length + 1];
