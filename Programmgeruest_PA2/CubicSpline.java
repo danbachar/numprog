@@ -83,15 +83,17 @@ public class CubicSpline implements InterpolationMethod {
     public void computeDerivatives() {
         /* TODO: diese Methode ist zu implementieren */
         double[] sols = new double[n-1];
-        sols[0] = (3 / h) * (y[2] - y[0] - (h / 3) * yprime[0]) ;
+        if(n == 2){
+            sols[n-2] = 3 * (y[n] - y[n-2] - (h * yprime[n] / 3)) / h - yprime[0];
+        } else sols[n-2] = 3 * (y[n] - y[n-2] - (h * yprime[n] / 3)) / h;
         if(n > 3){
             // Case 3: more than 2 unknowns
             for(int i = 1; i < n - 2; i ++){
-                sols[i] = y[i+2] - y[i];
+                sols[i] = (y[i+2] - y[i]) * 3/h;
             }
         }
         if(n > 2){
-            sols[n-2] = 3 * (y[n] - y[n-2] - (h * yprime[n] / 3)) / h;
+            sols[0] = (3 / h) * (y[2] - y[0] - (h / 3) * yprime[0]);
         }
 
 
