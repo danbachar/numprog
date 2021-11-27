@@ -34,14 +34,13 @@ public class IFFT {
         Complex[] z1 = ifft(evens);
         Complex[] z2 = ifft(odds);
 
-        // double omega = Math.exp(2 * Math.PI / n); // TODO: add i, simplify using periodität
-        // TODO: make omega complex
+        Complex omega = Complex.fromPolar(1, 2 * Math.PI / n); // TODO: make sure omega is correct
 
 
         Complex[] v = new Complex[n];
         for (int j=0; j<m; j++) {
-            v[j]   = z1[j];// + Math.pow(omega, j) * z2[j];
-            v[m+j] = z1[j];// - Math.pow(omega, j) * z2[j];
+            v[j]   = z1[j].add(omega.power(j).mul(z2[j]));
+            v[m+j] = z1[j].add(omega.power(j).mul(z2[j]));
         }
 
         return v;
