@@ -82,9 +82,6 @@ public class CubicSpline implements InterpolationMethod {
      */
     public void computeDerivatives() {
         /* TODO: diese Methode ist zu implementieren */
-        if (n <= 1)
-            return;
-
         double[] sols = new double[n-1];
         sols[0] = (3 / h) * (y[2] - y[0] - (h / 3) * yprime[0]) ;
         if(n > 3){
@@ -124,6 +121,7 @@ public class CubicSpline implements InterpolationMethod {
         if(z < a){
             return y[0];
         }
+
         int lowerPointInd = 0;
         //i) Find the interval
         for(int i = 0; i < n; i++){
