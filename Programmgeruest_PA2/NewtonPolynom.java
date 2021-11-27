@@ -101,8 +101,6 @@ public class NewtonPolynom implements InterpolationMethod {
         // setting ci,0 to the y values
         for (int i = 0; i < n; i++) {
             coefficients[i][0] = y[i];
-
-            System.out.println("c_" + i + ",0 " + coefficients[i][0] + "The values of y are " + y[i] + ", ");
         }
 
         // setting the rest of the coefficients to the correct values
@@ -110,12 +108,6 @@ public class NewtonPolynom implements InterpolationMethod {
             for (int i = 0; i <n; i++) {
                 if ((i + k) < n && (x[i + k] - x[i]) != 0) {
                     coefficients[i][k] = (coefficients[i + 1][k - 1] - coefficients[i][k - 1]) / (x[i + k] - x[i]);
-                    /*
-                    //bug in the above code. We are calculating, using coefficients we have not already calculated.
-                    */
-                    System.out.print("(" + coefficients[i + 1][k - 1] + " - " + coefficients[i][k - 1] + ")/(" + x[i + k] + " - " +  x[i] + ")");
-                    //printing for debugging purposes
-                    System.out.print(" C_" + i + "," + k + " "+ coefficients[i][k] + "  ,");
                 }
             }
         }
@@ -184,12 +176,6 @@ public class NewtonPolynom implements InterpolationMethod {
             // the indexes are on the diagonal
             diagonal[i] = (diagonal[i - 1] - f[i - 1]) / (x_new - x[x.length - i]); 
         }
-
-        // TODO: check the math with the index above that you are subtracting,
-        // (x.length-1-i)
-        // TODO: checking if assigning the array to a new array using the simple way
-        // works
-
 
         // setting the new coefficient in the coefficient array
         coeff[(f.length + 1) - 1] = diagonal[(f.length + 1) - 1];
