@@ -1,5 +1,8 @@
 package dft;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Klasse zum Darstellen komplexer Zahlen
  *
@@ -130,7 +133,11 @@ public class Complex {
      * Winkel phi.
      */
     public static Complex fromPolar(double r, double phi) {
-        double cos = Math.cos(phi), sin = Math.sin(phi);
-        return new Complex(r * cos, r * sin);
+        BigDecimal rCorrect = BigDecimal.valueOf(r);
+        BigDecimal cos = BigDecimal.valueOf(Math.cos(phi))
+                        .multiply(rCorrect);
+        BigDecimal sin = BigDecimal.valueOf(Math.sin(phi))
+                        .multiply(rCorrect);
+        return new Complex(cos.setScale(8, RoundingMode.HALF_UP).doubleValue(), sin.setScale(8, RoundingMode.HALF_UP).doubleValue());
     }
 }
