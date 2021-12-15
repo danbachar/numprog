@@ -50,6 +50,36 @@ public class Test {
             }
 
             System.out
+                    .println("  eigener Test der Methode backSubst");
+            double matrix[][] = {{ 4, 2, 3}, {0, 1, -0.5}, {0, 0, 1}};
+            double v[] = {5, -5.5, 3};
+            double[] res = {1, -4, 3};
+            x = Gauss.backSubst(matrix, v);
+            if (Util.vectorCompare(x, res)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(res);
+            }
+
+            // System.out
+            //         .println("  eigener Test der Methode backSubst mit eventueller Nulldivision");
+            // double[][] matrixWithZero = {{ 2, -1, 3, 2}, {0, -6, 2, 4}, {0, 0, 0, -5}, {0, 0, 1, 8}};
+            // double vForZeroTest[] = {-5, -10, 13, -24};
+            // double[] resWithZero = {(double)13/(double)6, (double)-17/(double)15, (double)-16/(double)5, (double)-13/(double)5};
+            // x = Gauss.backSubst(matrixWithZero, vForZeroTest);
+            // if (Util.vectorCompare(x, resWithZero)) {
+            //     System.out.println("    Richtiges Ergebnis");
+            // } else {
+            //     System.out.println("    FEHLER: falsches Ergebnis:");
+            //     Util.printVector(x);
+            //     System.out.println("            richtiges Ergebnis:");
+            //     Util.printVector(resWithZero);
+            // }
+
+            System.out
                     .println("  primitiver und unvollstaendiger Test der Methode solve");
             x = Gauss.solve(C, b);
             if (Util.vectorCompare(x, xC)) {

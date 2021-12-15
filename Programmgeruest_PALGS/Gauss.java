@@ -9,23 +9,49 @@ public class Gauss {
      * R: Eine obere Dreiecksmatrix der Groesse n x n
      * b: Ein Vektor der Laenge n
      */
-    public static double[] backSubst(double[][] R, double[] b) {
-        //TODO: Diese Methode ist zu implementieren
-        double x[] = new double[b.length];
-        for (int i=R.length-1; i>0; i--) {
-            double[] arr = R[i];
-            int cnt = 0;
-            for (int j = arr.length-1; j>=0; j--) {
-                if (arr.length - j >= cnt) { // to always only iterate through a maximal of cnt elements
-                    double elem = arr[j];
-                    double bElem = b[j];
-                    x[j] = bElem / elem;
-                    for (int k=0; k<cnt; k++) {
-                        x[j] -= arr[j-k] / elem;
-                    }
-                    cnt++;
-                }
+    private static int findIndexOfFirstNonNull(double[][] R, int from, int col) {
+        for (int i = from; i < R.length; i++) {
+            if (R[i][col] != 0) {
+                return i;
             }
+        }
+        
+        return -1; // theoretically shouldn't be possible because matrix is in obere dreicksform, which means there is inherently one non-zero to be found, otherwise matrix is not invertible
+    }
+
+    private static double sumWithCoeffs(double[] arr, double[] coefficients) {
+        double sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += coefficients[i] * arr[i];
+        }
+        return sum;
+    }
+
+    public static double[] backSubst(double[][] R, double[] b) {
+        double x[] = new double[b.length];
+        for (int i=R.length-1; i>=0; i--) {
+            double[] arr = R[i];
+            double elem = arr[i];
+            if (elem == 0) {
+                // if elem is zero, switch with first non-null to avoid null division
+                // TODO: test if this can happen, see exam test with Nulldivision that doesn't pass and is commented out
+                int indexOfRowForSwap = findIndexOfFirstNonNull(R, i+1 ,i);
+                double[] keep = R[i];
+                R[i] = R[indexOfRowForSwap];
+                R[indexOfRowForSwap] = keep;
+                double bKeep = b[i];
+                b[i] = b[indexOfRowForSwap];
+                b[indexOfRowForSwap] = bKeep;
+                arr = R[i];
+                elem = arr[i];
+                bKeep = x[i];
+                x[i] = x[indexOfRowForSwap];
+            }
+            double bElem = b[i];
+            x[i] = bElem / elem;
+            double sum = sumWithCoeffs(arr, x);
+
+            x[i] -= sum / elem - x[i];
         }
         
         return x;
