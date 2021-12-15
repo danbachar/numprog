@@ -11,8 +11,40 @@ public class PageRank {
      *      zufaellig irgendeine Seite zu besuchen
      */
     public static double[][] buildProbabilityMatrix(int[][] L, double rho) {
-        //TODO: Diese Methode ist zu implementieren
-        return new double[2][2];
+        //Die Linkmatrix ist die Matrix, die die Informationen enthaelt, welche 
+        //Links existieren.
+        //The array maps to the matrix exactly: A[i][j]
+        //The link matrix include in L[i][j] = 1 if j points to 1
+
+        //size of matrix
+        int n = L.length;
+
+        double[][] matrix = new double[n][n];
+        
+        //Initializing the modified matrix with the p value.
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                matrix[i][j] = rho/n;
+            }
+        }
+
+        //adding the modified probabilities to the matrix, reversing the indexes j and i in the loops
+        for(int j=0;j<n;j++){
+            //counting the number of links
+            int numLinks = 0;
+            for(int i=0;i<n;i++){
+                if(L[i][j]==1)
+                    numLinks++;
+            }
+            //from the above line, you get the number of absolute links
+            for(int i=0;i<n;i++){
+                //adding the probabilities to the matrix array
+                if(L[i][j]==1)
+                    matrix[i][j] += (1-rho)*(1/numLinks);
+            }
+        }
+
+        return matrix;
     }
 
     /**
