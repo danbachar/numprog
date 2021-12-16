@@ -64,7 +64,6 @@ public class Gauss {
             double elem = arr[i];
             if (elem == 0) {
                 // if elem is zero, switch with first non-null to avoid null division
-                // TODO: test if this can happen, see exam test with Nulldivision that doesn't pass and is commented out
                 int indexOfRowForSwap = findIndexOfFirstNonNull(R, i+1 ,i);
                 double[] keep = R[i];
                 R[i] = R[indexOfRowForSwap];
@@ -97,26 +96,28 @@ public class Gauss {
     public static double[] solve(double[][] A, double[] b) {
         int length = A.length;
         int k=0;
+        double[][] copyA = A;
+        double[] copyB = b;
         for (k = 0; k < length-1; k++) {
-            int j = findIndexOfGreatestElement(A, k+1, k);
-            if (j != k && Math.abs(A[j][k]) > Math.abs(A[k][k])) {
-                A = switchRows(A, b, j, k);
+            int j = findIndexOfGreatestElement(copyA, k+1, k);
+            if (j != k && Math.abs(copyA[j][k]) > Math.abs(copyA[k][k])) {
+                copyA = switchRows(copyA, copyB, j, k);
             }
             // at this point A[x][k] is the greatest (absolute value wise) element for all x
             int i = k+1;
             for(; i<length; i++) { // deduct the current row from all the next rows 
-                if (A[i][k] != 0) {
-                    double factor = A[i][k] / A[k][k];
-                    for (j = k; j < A.length; j++) { // all columns before k have already been processed
-                        A[i][j] -= factor*A[k][j];
+                if (copyA[i][k] != 0) {
+                    double factor = copyA[i][k] / copyA[k][k];
+                    for (j = k; j < length; j++) { // all columns before k have already been processed
+                        copyA[i][j] -= factor*copyA[k][j];
                     }
-                    b[i] -= factor * b[k];
+                    copyB[i] -= factor * copyB[k];
                 }
             }
         }
     
         // if k is last row (and last column), assume that all previous columns have been processed, solve using backwards substitution
-        return backSubst(A, b);
+        return backSubst(copyA, copyB);
     }
 
     private static void switch_lines(double[][] A, int a, int b){
