@@ -93,14 +93,10 @@ public class Test {
 
             System.out
                     .println("  primitiver und unvollstaendiger Test der Methode solveSing");
-            //x = Gauss.solveSing(A);
-            //TODO: replacing the above line with the below line for testing
-            x = new double[]{1,2,3,4};
-            //double lambda = xA[0] / x[0]; //TODO: commented out in order to test the page rank algorithm
+            x = Gauss.solveSing(A);
+            double lambda = xA[0] / x[0];
             for (int i = 0; i < x.length; i++) {
-                //x[i] *= lambda;
-                //replacing the above line with the below line just for testing the page rank test
-                x[i]*=1;
+                x[i] *= lambda;
             }
             if (Util.vectorCompare(x, xA)) {
                 System.out.println("    Richtiges Ergebnis");
