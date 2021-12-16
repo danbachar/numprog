@@ -96,8 +96,11 @@ public class Gauss {
     public static double[] solve(double[][] A, double[] b) {
         int length = A.length;
         int k=0;
-        double[][] copyA = A;
-        double[] copyB = b;
+        double[][] copyA = new double[length][length];
+        System.arraycopy(A, 0, copyA, 0, length);
+        
+        double[] copyB = new double[length];
+        System.arraycopy(b, 0, copyB, 0, length);
         for (k = 0; k < length-1; k++) {
             int j = findIndexOfGreatestElement(copyA, k+1, k);
             if (j != k && Math.abs(copyA[j][k]) > Math.abs(copyA[k][k])) {
