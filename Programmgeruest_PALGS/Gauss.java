@@ -99,25 +99,23 @@ public class Gauss {
         int k=0;
         for (k = 0; k < length-1; k++) {
             int j = findIndexOfGreatestElement(A, k+1, k);
-            if (j != k && A[j][k] > A[k][k]) {
+            if (j != k && Math.abs(A[j][k]) > Math.abs(A[k][k])) {
                 A = switchRows(A, b, j, k);
             }
             // at this point A[x][k] is the greatest (absolute value wise) element for all x
             int i = k+1;
-            int sign = A[k][k] < 0 ? -1 : 1;
             for(; i<length; i++) { // deduct the current row from all the next rows 
                 if (A[i][k] != 0) {
                     double factor = A[i][k] / A[k][k];
-                    for (j = k; j < A.length; j++) { // assume that all columns before k have already been bearbeitet
-                        double el = A[i][j];
-                        A[i][j] = el - sign*factor*A[k][k]; 
+                    for (j = k; j < A.length; j++) { // all columns before k have already been processed
+                        A[i][j] -= factor*A[k][j];
                     }
+                    b[i] -= factor * b[k];
                 }
             }
         }
     
         // if k is last row (and last column), assume that all previous columns have been processed, solve using backwards substitution
-        Util.printMatrix(A);
         return backSubst(A, b);
     }
 
