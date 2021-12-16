@@ -152,31 +152,34 @@ public class Gauss {
      * A: Eine singulaere Matrix der Groesse n x n
      */
     public static double[] solveSing(double[][] A) {
-
         int firstZeroLine = -1;
 
         if(A.length==0){
             return new double[0];
         }
-        for(int i = 0; i < A.length; i++){
+        double[][] A_copy = new double[A.length][A[0].length];
+        for(int i = 0; i < A_copy.length; i++){
+            System.arraycopy(A[i], 0, A_copy[i], 0, A[i].length);
+        }
+        for(int i = 0; i < A_copy.length; i++){
             int lineWithMaxVal = i;
-            for(int line = i+1; line< A.length; line++){
-                if(A[line][i] < A[lineWithMaxVal][i] && A[line][i] != 0){
+            for(int line = i+1; line< A_copy.length; line++){
+                if(A_copy[line][i] < A_copy[lineWithMaxVal][i] && A_copy[line][i] != 0){
                     lineWithMaxVal = line;
                 }
             }
-            if(Math.abs(A[lineWithMaxVal][i])< Math.pow(10, -10)){
+            if(Math.abs(A_copy[lineWithMaxVal][i])< Math.pow(10, -10)){
                 firstZeroLine = i;
                 break;
             }
             if(lineWithMaxVal != i){
-                switch_lines(A, i, lineWithMaxVal);
+                switch_lines(A_copy, i, lineWithMaxVal);
             }
-            for(int j = i + 1; j < A.length; j++){
-                subtracteLine(A, i, j, A[j][i]/A[i][i]);
+            for(int j = i + 1; j < A_copy.length; j++){
+                subtracteLine(A_copy, i, j, A_copy[j][i]/A_copy[i][i]);
             }
         }
-        double[] output = new double[A[0].length];
+        double[] output = new double[A_copy[0].length];
         if(firstZeroLine == -1){
             return output;
         }
@@ -184,12 +187,12 @@ public class Gauss {
         double[][] T = new double[firstZeroLine][firstZeroLine];
         for(int i = 0; i < firstZeroLine; i++){
             for(int j = 0; j < firstZeroLine; j++){
-                T[i][j] = A[i][j];
+                T[i][j] = A_copy[i][j];
             }
         }
         double[] v_neg = new double[firstZeroLine];
         for (int i = 0; i < firstZeroLine; i++){
-            v_neg[i] = -1 * A[i][firstZeroLine];
+            v_neg[i] = -1 * A_copy[i][firstZeroLine];
         }
         double[] x = backSubst(T, v_neg);
         System.arraycopy(x, 0, output, 0, x.length);
