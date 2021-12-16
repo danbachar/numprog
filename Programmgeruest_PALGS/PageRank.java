@@ -40,11 +40,25 @@ public class PageRank {
             // from the above line, you get the number of absolute links
             for (int i = 0; i < n; i++) {
                 // adding the probabilities to the matrix array
-                if (L[i][j] == 1)
-                    matrix[i][j] += (1 - rho) * (1 / numLinks);
+                if (L[i][j] == 1){
+                    matrix[i][j] += (1 - rho) * (((double) 1) / numLinks);
+                }
             }
         }
 
+        //the block above should add the probabilities 1/2 to each one
+
+        //TODO: remove this line afterwards, printing the probability matrix
+
+        // System.out.println("Printing the prob. matrix:");
+
+        // for(int i=0;i<n;i++){
+        //     System.out.print("[");
+        //     for(int j=0;j<n;j++){
+        //         System.out.print(matrix[i][j] + " ");
+        //     }
+        //     System.out.println("]");
+        // }
         return matrix;
     }
 
@@ -68,7 +82,7 @@ public class PageRank {
 
         // initializing the p to initial values
         for (int i = 0; i < n; i++) {
-            p[i] = 1 / n;
+            p[i] = ((double)1) / n;
         }
         // Matrix A~
         double[][] a = buildProbabilityMatrix(L, rho);
@@ -103,6 +117,8 @@ public class PageRank {
                 p[i] *= lambda;
             }
         }
+
+        //return a 2d array with the corresponding probabilities
 
         return p;
     }
@@ -171,4 +187,38 @@ public class PageRank {
             pr = p;
         }
     }
+
+    //TODO: remove this line afterwards
+    // public static void main(String[] args){
+    //     //testing page rank here
+    //     //page rank matrix with rho = 0.0
+
+    //     //test 1
+    //     int[][] l = new int[][]{{1,0,1},{0,1,1},{1,0,1}};
+    //     double rho = 0.5;
+    //     double[] p = rank(l, rho);
+    //     for(int i=0;i<p.length;i++){
+    //         System.out.print(p[i] + " ");
+    //     }
+
+    //     //test 2
+    //     System.out.println("Test 2:");
+    //     System.out.println();
+    //     l = new int[][]{{1,1},{1,1}};
+    //     rho = 0.0;
+    //     p = rank(l, rho);
+    //     for(int i=0;i<p.length;i++){
+    //         System.out.print(p[i] + " ");
+    //     }
+
+    //     //test 3
+    //     System.out.println("Test 3: ");
+    //     l = new int[][]{{1,0,1,0},{0,1,0,0},{1,1,1,1},{0,0,1,1}};
+    //     rho = 0.15;
+    //     p = rank(l, rho);
+    //     for(int i=0;i<p.length;i++){
+    //         System.out.print(p[i] + " ");
+    //     }
+
+    // }
 }
