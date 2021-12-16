@@ -153,12 +153,12 @@ public class Gauss {
      */
     public static double[] solveSing(double[][] A) {
 
-        int firstZeroLine = 0;
+        int firstZeroLine = -1;
 
         if(A.length==0){
             return new double[0];
         }
-        for(int i = 0; i < A.length-1; i++){
+        for(int i = 0; i < A.length; i++){
             int lineWithMaxVal = i;
             for(int line = i+1; line< A.length; line++){
                 if(A[line][i] < A[lineWithMaxVal][i] && A[line][i] != 0){
@@ -177,7 +177,7 @@ public class Gauss {
             }
         }
         double[] output = new double[A[0].length];
-        if(firstZeroLine == 0){
+        if(firstZeroLine == -1){
             return output;
         }
 
