@@ -1,4 +1,4 @@
-
+import java.util.Arrays;
 
 public class Gauss {
 
@@ -69,6 +69,19 @@ public class Gauss {
         return null;
     }
 
+    private static void switch_lines(double[][] A, int a, int b){
+        double tmp;
+        for( int i = 0; i < A[0].length; i++){
+            tmp = A[a][i];
+            A[a][i] = A[b][i];
+            A[b][i] = tmp;
+        }
+    }
+    private static void subtracteLine(double[][] A, int baseLine, int toSubtract, double koef){
+        for(int i = 0; i < A[baseLine].length; i++) {
+            A[toSubtract][i] -= A[baseLine][i] * koef;
+        }
+    }
     /**
      * Diese Methode soll eine Loesung p!=0 des LGS A*p=0 ermitteln. A ist dabei
      * eine nicht invertierbare Matrix. A soll dabei nicht veraendert werden.
@@ -87,8 +100,49 @@ public class Gauss {
      * A: Eine singulaere Matrix der Groesse n x n
      */
     public static double[] solveSing(double[][] A) {
-        //TODO: Diese Methode ist zu implementieren
-        return null;
+
+        int firstZeroLine = 0;
+
+        if(A.length==0){
+            return new double[0];
+        }
+        for(int i = 0; i < A.length-1; i++){
+            int lineWithMaxVal = i;
+            for(int line = i+1; line< A.length; line++){
+                if(A[line][i] < A[lineWithMaxVal][i] && A[line][i] != 0){
+                    lineWithMaxVal = line;
+                }
+            }
+            if(Math.abs(A[lineWithMaxVal][i])< Math.pow(10, -10)){
+                firstZeroLine = i;
+                break;
+            }
+            if(lineWithMaxVal != i){
+                switch_lines(A, i, lineWithMaxVal);
+            }
+            for(int j = i + 1; j < A.length; j++){
+                subtracteLine(A, i, j, A[j][i]/A[i][i]);
+            }
+        }
+        double[] output = new double[A[0].length];
+        if(firstZeroLine == 0){
+            return output;
+        }
+
+        double[][] T = new double[firstZeroLine][firstZeroLine];
+        for(int i = 0; i < firstZeroLine; i++){
+            for(int j = 0; j < firstZeroLine; j++){
+                T[i][j] = A[i][j];
+            }
+        }
+        double[] v_neg = new double[firstZeroLine];
+        for (int i = 0; i < firstZeroLine; i++){
+            v_neg[i] = -1 * A[i][firstZeroLine];
+        }
+        double[] x = backSubst(T, v_neg);
+        System.arraycopy(x, 0, output, 0, x.length);
+        output[x.length] = 1.0;
+        return output;
     }
 
     /**
