@@ -38,16 +38,22 @@ public class Gauss {
     }
     
     // this method switches row j and k in the matrix a
-    private static double[][] switchRows(double[][] a, double[] b, int j, int k) {
-        double[] keep = a[j];
-        a[j] = a[k];
-        a[k] = keep;
+    private static void switchRows(double[][] R, double[] b, int i, int j) {
+        double[] keep = R[i];
+        R[i] = R[j];
+        R[j] = keep;
 
-        double bKeep = b[j];
-        b[j] = b[k];
-        b[k] = bKeep;
-        
-        return a;
+        double bKeep = b[i];
+        b[i] = b[j];
+        b[j] = bKeep;
+    }
+
+    private static void switchRows(double[][] R, double[] b, double[] x, int i, int j) {
+        switchRows(R, b, i, j);
+
+        double xKeep = x[i];
+        x[i] = x[j];
+        x[j] = xKeep;
     }
     
     /**
@@ -58,25 +64,23 @@ public class Gauss {
      * b: Ein Vektor der Laenge n
      */
     public static double[] backSubst(double[][] R, double[] b) {
-        double x[] = new double[b.length];
-        for (int i=R.length-1; i>=0; i--) {
-            double[] arr = R[i];
+        int length = R.length;
+        double[][] copyR = new double[length][length];
+        double[] copyB   = new double[length];
+        double x[] = new double[length];
+        
+        System.arraycopy(R, 0, copyR, 0, length);
+        System.arraycopy(b, 0, copyB, 0, length);
+        
+        for (int i=copyR.length-1; i>=0; i--) {
+            double[] arr = copyR[i];
             double elem = arr[i];
             if (elem == 0) {
                 // if elem is zero, switch with first non-null to avoid null division
-                int indexOfRowForSwap = findIndexOfFirstNonNull(R, i+1 ,i);
-                double[] keep = R[i];
-                R[i] = R[indexOfRowForSwap];
-                R[indexOfRowForSwap] = keep;
-                double bKeep = b[i];
-                b[i] = b[indexOfRowForSwap];
-                b[indexOfRowForSwap] = bKeep;
-                arr = R[i];
-                elem = arr[i];
-                bKeep = x[i];
-                x[i] = x[indexOfRowForSwap];
+                int j = findIndexOfFirstNonNull(copyR, i+1 ,i);
+                switchRows(copyR, copyB, x, i, j);
             }
-            double bElem = b[i];
+            double bElem = copyB[i];
             x[i] = bElem / elem;
             double sum = sumWithCoeffs(arr, x);
 
@@ -104,7 +108,7 @@ public class Gauss {
         for (k = 0; k < length-1; k++) {
             int j = findIndexOfGreatestElement(copyA, k+1, k);
             if (j != k && Math.abs(copyA[j][k]) > Math.abs(copyA[k][k])) {
-                copyA = switchRows(copyA, copyB, j, k);
+                switchRows(copyA, copyB, j, k);
             }
             // at this point A[x][k] is the greatest (absolute value wise) element for all x
             int i = k+1;
