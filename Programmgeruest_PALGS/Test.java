@@ -49,29 +49,54 @@ public class Test {
                 Util.printVector(xC);
             }
 
-            // TODO: commented out this test in order to test whether the tests for the page rank work
-            // System.out
-            //         .println("  primitiver und unvollstaendiger Test der Methode solve");
-            // x = Gauss.solve(C, b);
-            // if (Util.vectorCompare(x, xC)) {
-            //     System.out.println("    Richtiges Ergebnis");
-            // } else {
-            //     System.out.println("    FEHLER: falsches Ergebnis:");
-            //     Util.printVector(x);
-            //     System.out.println("            richtiges Ergebnis:");
-            //     Util.printVector(xC);
-            // }
+            System.out
+                    .println("  eigener Test der Methode backSubst");
+            double matrix[][] = {{ 4, 2, 3}, {0, 1, -0.5}, {0, 0, 1}};
+            double v[] = {5, -5.5, 3};
+            double[] res = {1, -4, 3};
+            x = Gauss.backSubst(matrix, v);
+            if (Util.vectorCompare(x, res)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(res);
+            }
+
+            System.out
+                    .println("  primitiver und unvollstaendiger Test der Methode solve");
+            x = Gauss.solve(C, b);
+            if (Util.vectorCompare(x, xC)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(xC);
+            }
+
+            System.out
+                    .println("  eigener Test der Methode solve");
+            double[][] cForSolve = {{ 1, 4, 8, 3}, {0, 2, 2, 4}, {0, -3, -7, 2}, {0, 1, 5, 2} };
+            double[] bForSolve = {7, 0, 1, 2};
+            double[] resultForSolve = {6.875, -1.25, 0.5, 0.375};
+            x = Gauss.solve(cForSolve, bForSolve);
+            if (Util.vectorCompare(x, resultForSolve)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(resultForSolve);
+            }
 
             System.out
                     .println("  primitiver und unvollstaendiger Test der Methode solveSing");
-            //x = Gauss.solveSing(A);
-            //TODO: replacing the above line with the below line for testing
-            x = new double[]{1,2,3,4};
-            //double lambda = xA[0] / x[0]; //TODO: commented out in order to test the page rank algorithm
+            x = Gauss.solveSing(A);
+            double lambda = xA[0] / x[0];
             for (int i = 0; i < x.length; i++) {
-                //x[i] *= lambda;
-                //replacing the above line with the below line just for testing the page rank test
-                x[i]*=1;
+                x[i] *= lambda;
             }
             if (Util.vectorCompare(x, xA)) {
                 System.out.println("    Richtiges Ergebnis");
