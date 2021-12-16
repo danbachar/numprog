@@ -8,39 +8,40 @@ public class PageRank {
      * PARAMETER:
      * L: die Linkmatrix (s. Aufgabenblatt)
      * rho: Wahrscheinlichkeit, anstatt einem Link zu folgen,
-     *      zufaellig irgendeine Seite zu besuchen
+     * zufaellig irgendeine Seite zu besuchen
      */
     public static double[][] buildProbabilityMatrix(int[][] L, double rho) {
-        //Die Linkmatrix ist die Matrix, die die Informationen enthaelt, welche 
-        //Links existieren.
-        //The array maps to the matrix exactly: A[i][j]
-        //The link matrix include in L[i][j] = 1 if j points to 1
+        // Die Linkmatrix ist die Matrix, die die Informationen enthaelt, welche
+        // Links existieren.
+        // The array maps to the matrix exactly: A[i][j]
+        // The link matrix include in L[i][j] = 1 if j points to 1
 
-        //size of matrix
+        // size of matrix
         int n = L.length;
 
         double[][] matrix = new double[n][n];
-        
-        //Initializing the modified matrix with the p value.
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                matrix[i][j] = rho/n;
+
+        // Initializing the modified matrix with the p value.
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = rho / n;
             }
         }
 
-        //adding the modified probabilities to the matrix, reversing the indexes j and i in the loops
-        for(int j=0;j<n;j++){
-            //counting the number of links
+        // adding the modified probabilities to the matrix, reversing the indexes j and
+        // i in the loops
+        for (int j = 0; j < n; j++) {
+            // counting the number of links
             int numLinks = 0;
-            for(int i=0;i<n;i++){
-                if(L[i][j]==1)
+            for (int i = 0; i < n; i++) {
+                if (L[i][j] == 1)
                     numLinks++;
             }
-            //from the above line, you get the number of absolute links
-            for(int i=0;i<n;i++){
-                //adding the probabilities to the matrix array
-                if(L[i][j]==1)
-                    matrix[i][j] += (1-rho)*(1/numLinks);
+            // from the above line, you get the number of absolute links
+            for (int i = 0; i < n; i++) {
+                // adding the probabilities to the matrix array
+                if (L[i][j] == 1)
+                    matrix[i][j] += (1 - rho) * (1 / numLinks);
             }
         }
 
@@ -59,8 +60,67 @@ public class PageRank {
      *
      */
     public static double[] rank(int[][] L, double rho) {
-        //TODO: Diese Methode ist zu implementieren
-        return new double[2];
+        // Multiply the probability matrix with the vector of probabilities
+        // until the vector of probabilities doesn't change anymore
+        // Das Gleichgewicht: A~ * p = p.
+        int n = L.length;
+        double[] p = new double[n];
+
+        // initializing the p to initial values
+        for (int i = 0; i < n; i++) {
+            p[i] = 1 / n;
+        }
+        // Matrix A~
+        double[][] a = buildProbabilityMatrix(L, rho);
+
+        double[] temp_p = new double[n];
+        double[] prev_p = new double[n];
+
+        // multiplying a with temp_p while the probabilities change
+        while (!compareArray(prev_p, p)) {
+            // copying the p array into the prev_p
+            copyArray(prev_p, p);
+            for (int i = 0; i < n; i++) {
+                // resetting the temporary probability to zero
+                temp_p[i] = 0;
+                for (int j = 0; j < n; j++) {
+                    temp_p[i] += a[i][j] * p[j];
+                }
+            }
+            // copying the new probabilities into p
+            copyArray(p, temp_p);
+        }
+
+        // normalizing the probability vector
+        {
+            double lambda = 0;
+            for (int i = 0; i < n; i++) {
+                lambda += p[i];
+            }
+            lambda = 1 / lambda;
+
+            for (int i = 0; i < n; i++) {
+                p[i] *= lambda;
+            }
+        }
+
+        return p;
+    }
+
+    // copies the arrays and returns true if the values are the same
+    private static boolean compareArray(double[] arr1, double[] arr2) {
+        for (int i = 0; i < arr1.length; i++) {
+            if (arr1[i] != arr2[i])
+                return false;
+        }
+        return true;
+    }
+
+    // copies array 2 into array 1
+    private static void copyArray(double[] arr1, double[] arr2) {
+        for (int i = 0; i < arr1.length; i++) {
+            arr1[i] = arr2[i];
+        }
     }
 
     /**
@@ -70,7 +130,7 @@ public class PageRank {
      * urls: Die URLs der betrachteten Seiten
      * L: die Linkmatrix (s. Aufgabenblatt)
      * rho: Wahrscheinlichkeit, anstatt einem Link zu folgen,
-     *      zufaellig irgendeine Seite zu besuchen
+     * zufaellig irgendeine Seite zu besuchen
      */
     public static String[] getSortedURLs(String[] urls, int[][] L, double rho) {
         int n = L.length;
