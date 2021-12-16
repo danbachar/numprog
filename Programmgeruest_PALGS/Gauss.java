@@ -101,7 +101,9 @@ public class Gauss {
         int length = A.length;
         int k=0;
         double[][] copyA = new double[length][length];
-        System.arraycopy(A, 0, copyA, 0, length);
+        for(int i=0; i<length; i++) {
+            System.arraycopy(A[i], 0, copyA[i], 0, length);
+        }
         
         double[] copyB = new double[length];
         System.arraycopy(b, 0, copyB, 0, length);
