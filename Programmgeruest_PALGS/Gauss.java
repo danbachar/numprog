@@ -111,8 +111,7 @@ public class Gauss {
                 switchRows(copyA, copyB, j, k);
             }
             // at this point A[x][k] is the greatest (absolute value wise) element for all x
-            int i = k+1;
-            for(; i<length; i++) { // deduct the current row from all the next rows 
+            for(int i = k+1; i<length; i++) { // deduct the current row from all the next rows 
                 if (copyA[i][k] != 0) {
                     double factor = copyA[i][k] / copyA[k][k];
                     for (j = k; j < length; j++) { // all columns before k have already been processed
