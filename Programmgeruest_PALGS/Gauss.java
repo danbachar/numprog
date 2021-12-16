@@ -2,13 +2,6 @@ import java.util.Arrays;
 
 public class Gauss {
 
-    /**
-     * Diese Methode soll die Loesung x des LGS R*x=b durch
-     * Rueckwaertssubstitution ermitteln.
-     * PARAMETER:
-     * R: Eine obere Dreiecksmatrix der Groesse n x n
-     * b: Ein Vektor der Laenge n
-     */
     private static int findIndexOfFirstNonNull(double[][] R, int from, int col) {
         for (int i = from; i < R.length; i++) {
             if (R[i][col] != 0) {
@@ -19,6 +12,8 @@ public class Gauss {
         return -1; // theoretically shouldn't be possible because matrix is in obere dreicksform, which means there is inherently one non-zero to be found, otherwise matrix is not invertible
     }
 
+    // this method returns the sum of the array elements, multiplied with their respective coefficient values
+    // this method assumes arr.length == coefficients.length
     private static double sumWithCoeffs(double[] arr, double[] coefficients) {
         double sum = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -27,6 +22,41 @@ public class Gauss {
         return sum;
     }
 
+    private static int findIndexOfGreatestElement(double[][] arr, int from, int col) {
+        double max = Math.abs(arr[from][col]);
+        int index = from;
+        for (int row = from; row <arr.length; row++) {
+            double currElem = Math.abs(arr[row][col]);
+            if (currElem > max) {
+                max = currElem;
+                index = row;
+            }
+        }
+
+        return index;
+
+    }
+    
+    // this method switches row j and k in the matrix a
+    private static double[][] switchRows(double[][] a, double[] b, int j, int k) {
+        double[] keep = a[j];
+        a[j] = a[k];
+        a[k] = keep;
+
+        double bKeep = b[j];
+        b[j] = b[k];
+        b[k] = bKeep;
+        
+        return a;
+    }
+    
+    /**
+     * Diese Methode soll die Loesung x des LGS R*x=b durch
+     * Rueckwaertssubstitution ermitteln.
+     * PARAMETER:
+     * R: Eine obere Dreiecksmatrix der Groesse n x n
+     * b: Ein Vektor der Laenge n
+     */
     public static double[] backSubst(double[][] R, double[] b) {
         double x[] = new double[b.length];
         for (int i=R.length-1; i>=0; i--) {
@@ -65,8 +95,30 @@ public class Gauss {
      * b: Ein Vektor der Laenge n
      */
     public static double[] solve(double[][] A, double[] b) {
-        //TODO: Diese Methode ist zu implementieren
-        return null;
+        int length = A.length;
+        int k=0;
+        for (k = 0; k < length-1; k++) {
+            int j = findIndexOfGreatestElement(A, k+1, k);
+            if (j != k && A[j][k] > A[k][k]) {
+                A = switchRows(A, b, j, k);
+            }
+            // at this point A[x][k] is the greatest (absolute value wise) element for all x
+            int i = k+1;
+            int sign = A[k][k] < 0 ? -1 : 1;
+            for(; i<length; i++) { // deduct the current row from all the next rows 
+                if (A[i][k] != 0) {
+                    double factor = A[i][k] / A[k][k];
+                    for (j = k; j < A.length; j++) { // assume that all columns before k have already been bearbeitet
+                        double el = A[i][j];
+                        A[i][j] = el - sign*factor*A[k][k]; 
+                    }
+                }
+            }
+        }
+    
+        // if k is last row (and last column), assume that all previous columns have been processed, solve using backwards substitution
+        Util.printMatrix(A);
+        return backSubst(A, b);
     }
 
     private static void switch_lines(double[][] A, int a, int b){
