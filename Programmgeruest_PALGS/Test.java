@@ -92,6 +92,21 @@ public class Test {
             }
 
             System.out
+                    .println("  eigener Test der Methode solve");
+            double[][] cForSolve = {{ 1, 4, 8, 3}, {0, 2, 2, 4}, {0, -3, -7, 2}, {0, 1, 5, 2} };
+            double[] bForSolve = {7, 0, 1, 2};
+            double[] resultForSolve = {6.875, -1.25, 0.5, 0.375};
+            x = Gauss.solve(cForSolve, bForSolve);
+            if (Util.vectorCompare(x, resultForSolve)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(resultForSolve);
+            }
+
+            System.out
                     .println("  primitiver und unvollstaendiger Test der Methode solveSing");
             x = Gauss.solveSing(A);
             double lambda = xA[0] / x[0];
