@@ -77,6 +77,21 @@ public class Test {
             }
 
             System.out
+                .println("  tester test der Methode solve");
+            double[][] cForTester = {{ 7, 3, -5}, {-1, -2, 4}, {-4, 1, -3} };
+            double[] bForTester = {-12, 5, 1};
+            double[] resultForTester = {-1.0, 0, 1};
+            x = Gauss.solve(cForTester, bForTester);
+            if (Util.vectorCompare(x, resultForTester)) {
+                System.out.println("    Richtiges Ergebnis");
+            } else {
+                System.out.println("    FEHLER: falsches Ergebnis:");
+                Util.printVector(x);
+                System.out.println("            richtiges Ergebnis:");
+                Util.printVector(resultForTester);
+            }
+
+            System.out
                     .println("  eigener Test der Methode solve");
             double[][] cForSolve = {{ 1, 4, 8, 3}, {0, 2, 2, 4}, {0, -3, -7, 2}, {0, 1, 5, 2} };
             double[] bForSolve = {7, 0, 1, 2};
