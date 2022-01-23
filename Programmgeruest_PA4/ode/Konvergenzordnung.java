@@ -95,10 +95,10 @@ public class Konvergenzordnung {
 
     }
 
-    private double[] calculate_yh(Einschrittverfahren verfahren, double h) {
+    private double[] calculate_yh(Einschrittverfahren verfahren, double[] y, double h) {
 
         // call nextStep as long as t <= T, the final return value is the final y array
-        double[] y_end = Arrays.copyOf(y0, y0.length);
+        double[] y_end = Arrays.copyOf(y, y.length);
         double t = 0;
         
         while(t < T)
@@ -121,12 +121,11 @@ public class Konvergenzordnung {
     {
         // p ~~ ln(e_h1/e_h2) / ln(h1/h2)
 
-        double[] yh_1 = this.y0;
+        double[] yh_1 = calculate_yh(verfahren, y0, h);
         double e_h1 = error(yh_1);
 
         double h2 = h / 2;
-        double[] yh_2 = calculate_yh(verfahren, h2);
-        
+        double[] yh_2 = calculate_yh(verfahren, y0, h2);
         double e_h2 = error(yh_2);
 
         double errors_ln = Math.log(e_h1/e_h2);
