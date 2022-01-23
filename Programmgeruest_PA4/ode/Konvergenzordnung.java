@@ -78,38 +78,6 @@ public class Konvergenzordnung {
         return Math.sqrt(e);
     }
 
-    private void printArr(double[] arr) {
-        int length = arr.length;
-        
-        System.out.print("[ ");
-        for (int i = 0; i < length; i++) {
-            double elem = arr[i];
-            System.out.print(elem);
-            if (i == length-1) {
-                System.out.println(" ]");
-            } else {
-                System.out.print(", ");
-            }
-        }
-        System.out.println();
-
-    }
-
-    private double[] calculate_yh(Einschrittverfahren verfahren, double[] y, double h) {
-
-        // call nextStep as long as t <= T, the final return value is the final y array
-        double[] y_end = Arrays.copyOf(y, y.length);
-        double t = 0;
-        
-        while(t < T)
-        {
-            y_end = verfahren.nextStep(y_end, t, h, testODE);
-            t += h;
-        }
-
-        return y_end;
-    }
-
     /**
      * Diese Methode schätzt die Konvergenzordnung des gegebenen Verfahrens ab.
      *
@@ -120,12 +88,11 @@ public class Konvergenzordnung {
     public double order(Einschrittverfahren verfahren, double h)
     {
         // p ~~ ln(e_h1/e_h2) / ln(h1/h2)
-
-        double[] yh_1 = calculate_yh(verfahren, y0, h);
+        double[] yh_1 = integrate(verfahren, h);
         double e_h1 = error(yh_1);
 
         double h2 = h / 2;
-        double[] yh_2 = calculate_yh(verfahren, y0, h2);
+        double[] yh_2 = integrate(verfahren, h2);
         double e_h2 = error(yh_2);
 
         double errors_ln = Math.log(e_h1/e_h2);

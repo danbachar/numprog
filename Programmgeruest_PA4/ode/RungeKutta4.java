@@ -10,22 +10,6 @@ import java.util.Arrays;
  *
  */
 public class RungeKutta4 implements Einschrittverfahren {
-    private void printArr(double[] arr) {
-        int length = arr.length;
-        
-        System.out.print("[ ");
-        for (int i = 0; i < length; i++) {
-            double elem = arr[i];
-            System.out.print(elem);
-            if (i == length-1) {
-                System.out.println(" ]");
-            } else {
-                System.out.print(", ");
-            }
-        }
-        System.out.println();
-
-    }
 
     @Override
     /**
