@@ -10,6 +10,22 @@ import java.util.Arrays;
  *
  */
 public class RungeKutta4 implements Einschrittverfahren {
+    private void printArr(double[] arr) {
+        int length = arr.length;
+        
+        System.out.print("[ ");
+        for (int i = 0; i < length; i++) {
+            double elem = arr[i];
+            System.out.print(elem);
+            if (i == length-1) {
+                System.out.println(" ]");
+            } else {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
+
+    }
 
     @Override
     /**
@@ -17,31 +33,29 @@ public class RungeKutta4 implements Einschrittverfahren {
      * Bei der Umsetzung koennen die Methoden addVectors und multScalar benutzt werden.
      */
     public double[] nextStep(double[] y_k, double t, double delta_t, ODE ode) {
-        double[] ret = Arrays.copyOf(y_k,y_k.length);
-        double[] y_1 = ode.auswerten(t, y_k);
-        double[] y_2 = new double[y_k.length];
-        double[] y_3 = new double[y_k.length];
-        double[] y_4 = new double[y_k.length];
+        double[] euler = ode.auswerten(t, y_k);
+        double[] k1 = multScalar(euler, delta_t);
 
-        //Calculating value of y_1
-        y_1 = multScalar(y_1, delta_t);
+        double[] addPosHalfK1 = addVectors(y_k, multScalar(k1, 0.5));
+        double[] eulerHalfStepK2 = ode.auswerten(t+0.5*delta_t, addPosHalfK1);
+        double[] k2 = multScalar(eulerHalfStepK2, delta_t);
 
-        //calculating y_2
-        y_2 = multScalar(ode.auswerten(t + 1/2*delta_t, addVectors(y_k, multScalar(y_1, 1/2))), delta_t);
+        double[] addPosHalfK2 = addVectors(y_k, multScalar(k2, 0.5));
+        double[] eulerHalfStepK3 = ode.auswerten(t+0.5*delta_t, addPosHalfK2);
+        double[] k3 = multScalar(eulerHalfStepK3, delta_t);
 
-        //calculating y_3
-        y_3 = multScalar(ode.auswerten(t + 1/2*delta_t, addVectors(y_k, multScalar(y_2, 1/2))), delta_t);
+        double[] addPosK3 = addVectors(y_k, k3);
+        double[] eulerStepK3 = ode.auswerten(t+delta_t, addPosK3);
+        double[] k4 = multScalar(eulerStepK3, delta_t);
 
-        //calculating y_4
-        y_4 = multScalar(ode.auswerten(t + delta_t, addVectors(y_k, y_3)), delta_t);
+        double[] twiceK2 = multScalar(k2, 2.0);
+        double[] twiceK3 = multScalar(k3, 2.0);
+        double[] sumDoubles = addVectors(twiceK2, twiceK3);
+        double[] sumSingles = addVectors(k1, k4);
+        double[] sumSums = addVectors(sumDoubles, sumSingles);
+        double[] sixthSumCoefficients = multScalar(sumSums, 1.0/6.0);
 
-        //calculating r(t + delta_t)
-        ret = addVectors(ret, multScalar(addVectors(y_1, addVectors(multScalar(y_2, 2), addVectors(multScalar(y_3, 2), y_4))), 1/6));
-
-        //The below commented out code is for testing
-        //ret = multScalar(ret, 2);
-        //Why does multiplying with 2 give the result of: [-1,3] to [-4, -12]?
-        return ret;
+        return addVectors(y_k, sixthSumCoefficients);
     }
 
     /**
