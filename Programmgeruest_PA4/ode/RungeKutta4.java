@@ -38,8 +38,9 @@ public class RungeKutta4 implements Einschrittverfahren {
         //calculating r(t + delta_t)
         ret = addVectors(ret, multScalar(addVectors(y_1, addVectors(multScalar(y_2, 2), addVectors(multScalar(y_3, 2), y_4))), 1/6));
 
-        ret = multScalar(ret, 2);
-        //Why does multiplying with 2 give the result of: [-1,3] to [-4, -12]
+        //The below commented out code is for testing
+        //ret = multScalar(ret, 2);
+        //Why does multiplying with 2 give the result of: [-1,3] to [-4, -12]?
         return ret;
     }
 
